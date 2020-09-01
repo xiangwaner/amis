@@ -22222,7 +22222,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.5.2",
-      "/Users/dqcDu/bce-sdk-js"
+      "/Users/lurunze/bce-sdk/bce-sdk-js"
     ]
   ],
   "_development": true,
@@ -22248,7 +22248,7 @@ module.exports={
   ],
   "_resolved": "http://registry.npm.baidu-int.com/elliptic/-/elliptic-6.5.2.tgz",
   "_spec": "6.5.2",
-  "_where": "/Users/dqcDu/bce-sdk-js",
+  "_where": "/Users/lurunze/bce-sdk/bce-sdk-js",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -44710,7 +44710,7 @@ exports.createContext = Script.createContext = function (context) {
 },{"indexof":134}],208:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.0-rc.21",
+  "version": "1.0.0-rc.24",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -46697,7 +46697,8 @@ BosClient.prototype._prepareObjectHeaders = function (options) {
         H.X_BCE_GRANT_READ,
         H.X_BCE_GRANT_FULL_CONTROL,
         H.X_BCE_OBJECT_ACL,
-        H.X_BCE_OBJECT_GRANT_READ
+        H.X_BCE_OBJECT_GRANT_READ,
+        H.X_BCE_STORAGE_CLASS
     ];
     var metaSize = 0;
     var headers = u.pick(options, function (value, key) {
@@ -46734,6 +46735,28 @@ BosClient.prototype._prepareObjectHeaders = function (options) {
 
     if (!u.has(headers, H.CONTENT_TYPE)) {
         headers[H.CONTENT_TYPE] = 'application/octet-stream';
+    }
+
+    if (u.has(headers, H.X_BCE_STORAGE_CLASS)) {
+        const storageClass = headers[H.X_BCE_STORAGE_CLASS];
+        const STORAGE_CLASS = [
+            /** 标准存储类型 */
+            'STANDARD',
+            /** 低频存储 */
+            'STANDARD_IA',
+            /** 归档存储 */
+            'ARCHIVE',
+            /** 冷存储 */
+            'COLD',
+            /** 标准存储-多AZ */
+            'MAZ_STANDARD',
+            /** 低频存储-多AZ */
+            'MAZ_STANDARD_IA'
+        ];
+
+        if (!STORAGE_CLASS.includes(storageClass)) {
+            headers[H.X_BCE_STORAGE_CLASS] = STORAGE_CLASS[0];
+        }
     }
 
     return headers;
@@ -48536,6 +48559,7 @@ exports.X_BCE_REQUEST_ID = 'x-bce-request-id';
 exports.X_BCE_CONTENT_SHA256 = 'x-bce-content-sha256';
 exports.X_BCE_OBJECT_ACL = 'x-bce-object-acl';
 exports.X_BCE_OBJECT_GRANT_READ = 'x-bce-object-grant-read';
+exports.X_BCE_STORAGE_CLASS = 'x-bce-storage-class';
 
 exports.X_HTTP_HEADERS = 'http_headers';
 exports.X_BODY = 'body';

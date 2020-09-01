@@ -301,8 +301,7 @@ BcsClient.prototype._prepareObjectHeaders = function (options) {
         H.CONTENT_TYPE,
         H.CONTENT_DISPOSITION,
         H.ETAG,
-        H.SESSION_TOKEN,
-        H.X_BCE_STORAGE_CLASS
+        H.SESSION_TOKEN
     ];
     var metaSize = 0;
     var headers = u.pick(options, function (value, key) {
@@ -339,28 +338,6 @@ BcsClient.prototype._prepareObjectHeaders = function (options) {
 
     if (!u.has(headers, H.CONTENT_TYPE)) {
         headers[H.CONTENT_TYPE] = 'application/octet-stream';
-    }
-
-    if (u.has(headers, H.X_BCE_STORAGE_CLASS)) {
-        let storageClass = headers[H.X_BCE_STORAGE_CLASS];
-        const STORAGE_CLASS = [
-            /** 标准存储类型 */
-            'STANDARD',
-            /** 低频存储 */
-            'STANDARD_IA',
-            /** 归档存储 */
-            'ARCHIVE',
-            /** 冷存储 */
-            'COLD',
-            /** 标准存储-多AZ */
-            'MAZ_STANDARD',
-            /** 低频存储-多AZ */
-            'MAZ_STANDARD_IA'
-        ];
-
-        if (!STORAGE_CLASS.includes(storageClass)) {
-            headers[H.X_BCE_STORAGE_CLASS] = STORAGE_CLASS[0];
-        }
     }
 
     return headers;

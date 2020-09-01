@@ -1066,7 +1066,8 @@ BosClient.prototype._prepareObjectHeaders = function (options) {
         H.X_BCE_GRANT_READ,
         H.X_BCE_GRANT_FULL_CONTROL,
         H.X_BCE_OBJECT_ACL,
-        H.X_BCE_OBJECT_GRANT_READ
+        H.X_BCE_OBJECT_GRANT_READ,
+        H.X_BCE_STORAGE_CLASS
     ];
     var metaSize = 0;
     var headers = u.pick(options, function (value, key) {
@@ -1103,6 +1104,28 @@ BosClient.prototype._prepareObjectHeaders = function (options) {
 
     if (!u.has(headers, H.CONTENT_TYPE)) {
         headers[H.CONTENT_TYPE] = 'application/octet-stream';
+    }
+
+    if (u.has(headers, H.X_BCE_STORAGE_CLASS)) {
+        const storageClass = headers[H.X_BCE_STORAGE_CLASS];
+        const STORAGE_CLASS = [
+            /** 标准存储类型 */
+            'STANDARD',
+            /** 低频存储 */
+            'STANDARD_IA',
+            /** 归档存储 */
+            'ARCHIVE',
+            /** 冷存储 */
+            'COLD',
+            /** 标准存储-多AZ */
+            'MAZ_STANDARD',
+            /** 低频存储-多AZ */
+            'MAZ_STANDARD_IA'
+        ];
+
+        if (!STORAGE_CLASS.includes(storageClass)) {
+            headers[H.X_BCE_STORAGE_CLASS] = STORAGE_CLASS[0];
+        }
     }
 
     return headers;
