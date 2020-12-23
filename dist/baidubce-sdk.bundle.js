@@ -22222,7 +22222,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.5.2",
-      "/Users/lurunze/bce-sdk/bce-sdk-js"
+      "/Users/lurunze/baidubce/bce-sdk-js"
     ]
   ],
   "_development": true,
@@ -22248,7 +22248,7 @@ module.exports={
   ],
   "_resolved": "http://registry.npm.baidu-int.com/elliptic/-/elliptic-6.5.2.tgz",
   "_spec": "6.5.2",
-  "_where": "/Users/lurunze/bce-sdk/bce-sdk-js",
+  "_where": "/Users/lurunze/baidubce/bce-sdk-js",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -44710,7 +44710,7 @@ exports.createContext = Script.createContext = function (context) {
 },{"indexof":134}],208:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.0-rc.24",
+  "version": "1.0.0-rc.26",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -44731,7 +44731,8 @@ module.exports={
   "authors": [
     "leeight <leeight@gmail.com>",
     "木休大人 <523317421@qq.com>",
-    "yangwei <yangwei9012@163.com>"
+    "yangwei <yangwei9012@163.com>",
+    "lurunze <lueunze@hotmail.com>"
   ],
   "license": "MIT",
   "dependencies": {
@@ -45812,7 +45813,18 @@ BosClient.prototype.createBucket = function (bucketName, options) {
 // BosClient.prototype.getBucketEncryption =
 // BosClient.prototype.putBucketEncryption =
 // BosClient.prototype.getBucketStorageclass =
-// BosClient.prototype.putBucketStorageclass =
+BosClient.prototype.putBucketStorageclass = function (bucketName, storageClass, options) {
+    options = options || {};
+    var headers = {};
+    headers[H.CONTENT_TYPE] = 'application/json; charset=UTF-8';
+    return this.sendRequest('PUT', {
+        bucketName: bucketName,
+        headers: headers,
+        params: {storageClass: ''},
+        body: JSON.stringify({storageClass: storageClass}),
+        config: options.config
+    });
+};
 // BosClient.prototype.deleteBucketLifecycle =
 // BosClient.prototype.getBucketLifecycle =
 // BosClient.prototype.putBucketLifecycle =
@@ -45889,7 +45901,20 @@ BosClient.prototype.setBucketCannedAcl = function (bucketName, cannedAcl, option
     });
 };
 
-BosClient.prototype.putBucketAcl =
+BosClient.prototype.putBucketAcl = function (bucketName, acl, options) {
+    options = options || {};
+
+    var headers = {};
+    headers[H.CONTENT_TYPE] = 'application/json; charset=UTF-8';
+    headers[H.X_BCE_ACL] = acl;
+    return this.sendRequest('PUT', {
+        bucketName: bucketName,
+        headers: headers,
+        params: {acl: ''},
+        config: options.config
+    });
+};
+
 BosClient.prototype.setBucketAcl = function (bucketName, acl, options) {
     options = options || {};
 
@@ -47752,6 +47777,17 @@ CfcClient.prototype.listAliases = function (functionName, opt_options) {
     return this.sendRequest('GET', '/v1/functions/' + functionName + '/aliases/', {
         params: params
     });
+};
+
+
+CfcClient.prototype.sendRequest = function (httpMethod, resource, varArgs) {
+    if (this.config.workspaceId) {
+        if (!varArgs.headers) {
+            varArgs.headers = {};
+        }
+        varArgs.headers['X-CFC-Workspace-Id'] = this.config.workspaceId;
+    }
+    return BceBaseClient.prototype.sendRequest.call(this, httpMethod, resource, varArgs);
 };
 
 module.exports = CfcClient;

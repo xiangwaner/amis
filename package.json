@@ -1,6 +1,6 @@
 {
   "name": "@baiducloud/sdk",
-  "version": "1.0.0-rc.25",
+  "version": "1.0.0-rc.26",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -21,7 +21,8 @@
   "authors": [
     "leeight <leeight@gmail.com>",
     "木休大人 <523317421@qq.com>",
-    "yangwei <yangwei9012@163.com>"
+    "yangwei <yangwei9012@163.com>",
+    "lurunze <lueunze@hotmail.com>"
   ],
   "license": "MIT",
   "dependencies": {
