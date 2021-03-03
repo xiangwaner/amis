@@ -1,4 +1,9 @@
-# Changelog
+# CHANGELOG
+
+## 1.0.0-rc.27(2021-03-03)
+
+### Features
+- CFCClient supports trigger API
 
 ## 1.0.0-rc.26(2020-12-23)
 
