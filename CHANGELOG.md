@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 1.0.0-rc.27(2021-03-03)
+## 1.0.0-rc.28(2021-03-26)
 
 ### Fix
 - Fix entry file path for browser environment
