@@ -3,7 +3,10 @@
   "version": "1.0.0-rc.28",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
-  "browser": "dist/baidubce-sdk.bundle.js",
+  "browser": {
+    "fs": false,
+    "main": "./dist/baidubce-sdk.bundle.js"
+  },
   "directories": {
     "test": "test"
   },

@@ -44714,7 +44714,8 @@ module.exports={
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
-    "fs": false
+    "fs": false,
+    "main": "./dist/baidubce-sdk.bundle.js"
   },
   "directories": {
     "test": "test"
