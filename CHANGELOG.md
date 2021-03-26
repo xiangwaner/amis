@@ -2,6 +2,11 @@
 
 ## 1.0.0-rc.27(2021-03-03)
 
+### Fix
+- Fix entry file path for browser environment
+
+## 1.0.0-rc.27(2021-03-03)
+
 ### Features
 - CFCClient supports trigger API
 
