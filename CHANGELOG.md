@@ -1,6 +1,11 @@
 # CHANGELOG
 
+## 1.0.0-rc.30(2021-08-03)
+### Fix
+- BOSClient: fix issue of lack of '/' prefix of object url;
+
 ## 1.0.0-rc.29(2021-08-03)
+### Feature
 - BOSClient: support "config.removeVersionPrefix"(boolean) parameter to dynamic control 'v1' prefix of resource in generatePresignedUrl, generateUrl;
 
 ## 1.0.0-rc.28(2021-03-26)

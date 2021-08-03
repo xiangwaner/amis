@@ -44710,7 +44710,7 @@ exports.createContext = Script.createContext = function (context) {
 },{"indexof":134}],208:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.0-rc.29",
+  "version": "1.0.0-rc.30",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -45728,7 +45728,7 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
     params = params || {};
 
     var resource = path.normalize(path.join(
-        config.removeVersionPrefix ? '' : '/v1',
+        config.removeVersionPrefix ? '/' : '/v1',
         /\.[\w\-]+\.bcebos\.com$/.test(config.endpoint) ? '' : strings.normalize(bucketName || ''),
         strings.normalize(key || '', false)
     )).replace(/\\/g, '/');
@@ -45750,7 +45750,7 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
 BosClient.prototype.generateUrl = function (bucketName, key, pipeline, cdn, config) {
     config = u.extend({}, this.config, config);
     var resource = path.normalize(path.join(
-        config.removeVersionPrefix ? '' : '/v1',
+        config.removeVersionPrefix ? '/' : '/v1',
         strings.normalize(bucketName || ''),
         strings.normalize(key || '', false)
     )).replace(/\\/g, '/');
@@ -46630,7 +46630,7 @@ BosClient.prototype.sendRequest = function (httpMethod, varArgs) {
 
     var config = u.extend({}, this.config, args.config);
     var resource = path.normalize(path.join(
-        args.removeVersionPrefix ? '' : '/v1',
+        args.removeVersionPrefix ? '/' : '/v1',
         /\.[\w\-]+\.bcebos\.com$/.test(config.endpoint) ? '' : strings.normalize(args.bucketName || ''),
         strings.normalize(args.key || '', false)
     )).replace(/\\/g, '/');
