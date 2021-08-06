@@ -13,8 +13,8 @@ var Auth = require('../../../../../src/auth');
 var STS = require('../../../../../src/sts');
 
 var kCredentials = {
-    ak: '9fe103ae98de4798aabb34a433a3058b',
-    sk: 'b084ab23d1ef44c997d10d2723dd8014'
+    ak: '',
+    sk: ''
 };
 var kRegion = 'bj';
 

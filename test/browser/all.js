@@ -15,8 +15,8 @@ define(function (require) {
     var sdk = require('baidubce-sdk.bundle');
     var config = {
         credentials: {
-            ak: '46bd9968a6194b4bbdf0341f2286ccce',
-            sk: 'ec7f4e0174254f6f9020f9680fb1da9f'
+            ak: '',
+            sk: ''
         },
         endpoint: 'http://10.105.97.15'
     };

@@ -233,7 +233,7 @@ describe('Player', function () {
         var client = new Player(config.vod);
         var mediaId = 'mda-gkrt6nyjt36r15e4';
 
-        return client.setMediaId(mediaId).code({ak: '46bd9968a6194b4bbdf0341f2286ccce'}).then(function (response) {
+        return client.setMediaId(mediaId).code({ak: ''}).then(function (response) {
             debug(response.body.codes);
             expect(response.body.codes).to.be.an('array');
             expect(response.body.codes[0].codeType).to.eql('html');
