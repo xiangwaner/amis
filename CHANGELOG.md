@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.0.0-rc.31(2021-08-13)
+### Fix
+- BOSClient: add key valiation in getObject() & getObjectToFile() method;
+  - empty key is not allowed
+  - consecutive forward slashes (/) are not allowed in key
+  - forward slash (/) and a backslash (\\) are not allowed at head or tail
+  - consecutive periods (..) are not allowed in sub-path
+
 ## 1.0.0-rc.30(2021-08-03)
 ### Fix
 - BOSClient: fix issue of lack of '/' prefix of object url;

@@ -505,6 +505,19 @@ BosClient.prototype.getObjectMetadata = function (bucketName, key, options) {
 };
 
 BosClient.prototype.getObject = function (bucketName, key, range, options) {
+    if (!key) {
+        throw new TypeError('key should not be empty.');
+    }
+    else if (/\/\/+/.test(key)) {
+        throw new TypeError('key should not contain consecutive forward slashes (/).');
+    }
+    else if (/^[/\\]/.test(key) || /[/\\]$/.test(key)) {
+        throw new TypeError('key should not start or end with a forward slash (/) or a backslash (\\).');
+    }
+    else if (/\/\.\.\//.test(key)) {
+        throw new TypeError('path in key should not contain consecutive periods (..).');
+    }
+
     options = options || {};
 
     var outputStream = new WMStream();
@@ -523,6 +536,19 @@ BosClient.prototype.getObject = function (bucketName, key, range, options) {
 };
 
 BosClient.prototype.getObjectToFile = function (bucketName, key, filename, range, options) {
+    if (!key) {
+        throw new TypeError('key should not be empty.');
+    }
+    else if (/\/\/+/.test(key)) {
+        throw new TypeError('key should not contain consecutive forward slashes (/).');
+    }
+    else if (/^[/\\]/.test(key) || /[/\\]$/.test(key)) {
+        throw new TypeError('key should not start or end with a forward slash (/) or a backslash (\\).');
+    }
+    else if (/\/\.\.\//.test(key)) {
+        throw new TypeError('path in key should not contain consecutive periods (..).');
+    }
+
     options = options || {};
 
     return this.sendRequest('GET', {
