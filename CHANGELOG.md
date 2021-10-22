@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.0-rc.32(2021-10-22)
+### Fix
+- BOSClient: fix the browser environment reference entry.
+
 ## 1.0.0-rc.31(2021-08-13)
 ### Fix
 - BOSClient: add key valiation in getObject() & getObjectToFile() method;

@@ -22222,7 +22222,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.5.2",
-      "/Users/lurunze/baidubce/bce-sdk-js"
+      "/Users/hanxiao11/console-project/github/my/bce-sdk-js"
     ]
   ],
   "_development": true,
@@ -22248,7 +22248,7 @@ module.exports={
   ],
   "_resolved": "http://registry.npm.baidu-int.com/elliptic/-/elliptic-6.5.2.tgz",
   "_spec": "6.5.2",
-  "_where": "/Users/lurunze/baidubce/bce-sdk-js",
+  "_where": "/Users/hanxiao11/console-project/github/my/bce-sdk-js",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -44710,12 +44710,12 @@ exports.createContext = Script.createContext = function (context) {
 },{"indexof":134}],208:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.0-rc.31",
+  "version": "1.0.0-rc.32",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
     "fs": false,
-    "main": "./dist/baidubce-sdk.bundle.js"
+    "index.js": "./dist/baidubce-sdk.bundle.js"
   },
   "directories": {
     "test": "test"
@@ -44733,7 +44733,8 @@ module.exports={
     "leeight <leeight@gmail.com>",
     "木休大人 <523317421@qq.com>",
     "yangwei <yangwei9012@163.com>",
-    "lurunze <lueunze@hotmail.com>"
+    "lurunze <lueunze@hotmail.com>",
+    "hanxiao <hanxiao_do@126.com>"
   ],
   "license": "MIT",
   "dependencies": {
