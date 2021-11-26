@@ -32,6 +32,7 @@ var BceBaseClient = require('./bce_base_client');
  *
  * @class
  * @param {Object} config The tsdb_data client configuration.
+ * @param {String} database The tsdb_data client configuration.
  * @extends {BceBaseClient}
  */
 function TsdbDataClient(config, database) {
