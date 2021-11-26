@@ -126,8 +126,8 @@ app.listen(3000);
 {
     ...
     body: {
-        "accessKeyId": "d87a16e5ce1d47c1917b38ed03fbb329",
-        "secretAccessKey": "e9b6f59ce06c45cdaaea2296111dab46",
+        "accessKeyId": "AK",
+        "secretAccessKey": "SK",
         "sessionToken": "MjUzZjQzNTY4OTE0NDRkNjg3N2E4YzJhZTc4YmU5ZDh8AAAAABwCAAB/HfHDVV2bu5xUf6rApt2YdSLG6+21UTC62EHvIuiaamtuMQQKNkR9PU2NJGVbuWgBn8Ot0atk0HnWYQGgwgyew24HtbrX3GFiR/cDymCowm0TI6OGq7k8pGuBiCczT8qZcarH7VdZBd1lkpYaXbtP7wQJqiochDXrswrCd+J/I2CeSQT6mJiMmvupUV06R89dWBL/Vcu7JQpdYBk0d5cp2B+gdaHddBobevlBmKQw50/oOykJIuho4Wn7FgOGPMPdod0Pf0s7lW/HgSnPOjZCgRl0pihs197rP3GWpnlJRyfdCY0g0GFG6T0/FsqDbxbi8lWzF1QRTmJzzh2Tax8xoPFKGMbpntp//vGP7oPYK1JoES34TjcdcZnLzIRnVIGaZAzmZMUhPEXE5RVX1w8jPEXMJJHSrFs3lJe13o9Dwg==",
         "createTime": "2016-02-16T14:01:29Z",
         "expiration": "2016-02-16T15:41:29Z",

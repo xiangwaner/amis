@@ -35,8 +35,8 @@ describe('XBosClient', function () {
         client = new BosClient({
             endpoint: 'https://bos.qasandbox.bcetest.baidu.com',
             credentials: {
-                ak: 'f932edbccdb04cec8e3307b1798f16e6',
-                sk: 'cdeb07159a884b80aac08ff474b6e71f'
+                ak: 'AK',
+                sk: 'SK'
             }
         });
     });
