@@ -22222,7 +22222,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.5.2",
-      "/Users/hanxiao11/console-project/github/my/bce-sdk-js"
+      "/Users/lurunze/baidubce/bce-sdk-js"
     ]
   ],
   "_development": true,
@@ -22248,7 +22248,7 @@ module.exports={
   ],
   "_resolved": "http://registry.npm.baidu-int.com/elliptic/-/elliptic-6.5.2.tgz",
   "_spec": "6.5.2",
-  "_where": "/Users/hanxiao11/console-project/github/my/bce-sdk-js",
+  "_where": "/Users/lurunze/baidubce/bce-sdk-js",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -44710,7 +44710,7 @@ exports.createContext = Script.createContext = function (context) {
 },{"indexof":134}],208:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.0-rc.32",
+  "version": "1.0.0-rc.33",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -52506,15 +52506,17 @@ var BceBaseClient = require('./bce_base_client');
  *
  * @class
  * @param {Object} config The tsdb_data client configuration.
+ * @param {String} database The tsdb_data client configuration.
  * @extends {BceBaseClient}
  */
-function TsdbDataClient(config) {
+function TsdbDataClient(config, database) {
     BceBaseClient.call(this, config, 'tsdb', true);
 
     /**
      * @type {HttpClient}
      */
     this._httpAgent = null;
+    this.database = database;
 }
 util.inherits(TsdbDataClient, BceBaseClient);
 
@@ -52676,6 +52678,9 @@ TsdbDataClient.prototype.sendRequest = function (httpMethod, resource, varArgs) 
         outputStream: null
     };
     var args = u.extend(defaultArgs, varArgs);
+    if (this.database != null) {
+        args.params.database = this.database;
+    }
     var config = u.extend({}, this.config, args.config);
     var client = this;
     var agent = this._httpAgent = new HttpClient(config);
