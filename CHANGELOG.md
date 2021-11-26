@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.0-rc.33(2021-11-25)
+### Fix
+- TSDB: Supports adding database name when creating TSDB client.
+
 ## 1.0.0-rc.32(2021-10-22)
 ### Fix
 - BOSClient: fix the browser environment reference entry.
