@@ -1,7 +1,7 @@
 var TsdbAdminClient = require('@baiducloud/sdk').TsdbAdminClient; 
 
 const config = {
-    endpoint: '',                // tsdb.{region}.baidubce.com
+    endpoint: 'http://tsdb.gz.baidubce.com',                // tsdb.{region}.baidubce.com
     credentials: {
         ak: '',             //您的AccessKey
         sk: ''              //您的SecretAccessKey

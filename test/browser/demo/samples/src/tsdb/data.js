@@ -7,28 +7,18 @@
 //     }
 // };
 
-//沙盒
-const AK = '70cf80e491d848799402fcaaacbf4378'
-const SK = 'eb10b99a1b0e4ad59a985bc39612af85'
-const ENDPOINT = 'http://10.136.187.32:8015'
-const DATABASE = 'test0001'
-
-//公有云
-// const AK = '9b31328014c64d39a104e46c7d9532d2'
-// const SK = 'c2f663c4c8ad447193cc4000f87c48e1'
-// const ENDPOINT = 'http://testnode.tsdb.iot.gz.baidubce.com'
-
-
-const TsdbDataClient = require('../../../../../src/tsdb_data_client');
+const TsdbDataClient = require('../../../../../../src/tsdb_data_client');
 const config = {
-    endpoint: ENDPOINT,   // 用户的时序数据库域名，形式如 http://{databaseName}.tsdb.iot.<region>.baidubce.com
+    endpoint: 'http://tsdb.gz.baidubce.com',                // tsdb.{region}.baidubce.com
     credentials: {
-        ak: AK,             //您的AccessKey
-        sk: SK              //您的SecretAccessKey
+        ak: '',             //您的AccessKey
+        sk: ''              //您的SecretAccessKey
     }
-};
+}
 
-let client = new TsdbDataClient(config, DATABASE);
+let client = new TsdbDataClient(config);
+//let client = new TsdbDataClient(config, database_name);
+
 console.log(client,'--------')
 function writeDemo() {
     // 构建想要写入的datapoints

@@ -32,7 +32,6 @@ var BceBaseClient = require('./bce_base_client');
  *
  * @class
  * @param {Object} config The tsdb_data client configuration.
- * @param {String} database The tsdb_data client configuration.
  * @extends {BceBaseClient}
  */
 function TsdbDataClient(config, database) {
@@ -208,7 +207,6 @@ TsdbDataClient.prototype.sendRequest = function (httpMethod, resource, varArgs) 
         args.params.database = this.database;
     }
     var config = u.extend({}, this.config, args.config);
-
     var client = this;
     var agent = this._httpAgent = new HttpClient(config);
     var httpContext = {
