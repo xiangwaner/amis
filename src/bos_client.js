@@ -92,6 +92,7 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
                                                      expirationInSeconds, headers, params, headersToSign, config) {
 
     config = u.extend({}, this.config, config);
+    bucketName = config.cname_enabled ? '' : bucketName;
     params = params || {};
 
     var resource = path.normalize(path.join(
@@ -116,6 +117,8 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
 
 BosClient.prototype.generateUrl = function (bucketName, key, pipeline, cdn, config) {
     config = u.extend({}, this.config, config);
+    bucketName = config.cname_enabled ? '' : bucketName;
+    
     var resource = path.normalize(path.join(
         config.removeVersionPrefix ? '/' : '/v1',
         strings.normalize(bucketName || ''),
@@ -1019,6 +1022,7 @@ BosClient.prototype.sendRequest = function (httpMethod, varArgs) {
         config: {},
         outputStream: null
     };
+    varArgs.bucketName = this.config.cname_enabled ? '' : varArgs.bucketName;
     var args = u.extend(defaultArgs, varArgs);
 
     var config = u.extend({}, this.config, args.config);
