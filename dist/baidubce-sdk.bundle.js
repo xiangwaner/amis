@@ -22222,7 +22222,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.5.2",
-      "/Users/lurunze/baidubce/bce-sdk-js"
+      "/Users/hanxiao11/console-project/github/my/bce-sdk-js"
     ]
   ],
   "_development": true,
@@ -22248,7 +22248,7 @@ module.exports={
   ],
   "_resolved": "http://registry.npm.baidu-int.com/elliptic/-/elliptic-6.5.2.tgz",
   "_spec": "6.5.2",
-  "_where": "/Users/lurunze/baidubce/bce-sdk-js",
+  "_where": "/Users/hanxiao11/console-project/github/my/bce-sdk-js",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -44710,7 +44710,7 @@ exports.createContext = Script.createContext = function (context) {
 },{"indexof":134}],208:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.0-rc.33",
+  "version": "1.0.0-rc.34",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -45726,6 +45726,7 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
                                                      expirationInSeconds, headers, params, headersToSign, config) {
 
     config = u.extend({}, this.config, config);
+    bucketName = config.cname_enabled ? '' : bucketName;
     params = params || {};
 
     var resource = path.normalize(path.join(
@@ -45750,6 +45751,8 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
 
 BosClient.prototype.generateUrl = function (bucketName, key, pipeline, cdn, config) {
     config = u.extend({}, this.config, config);
+    bucketName = config.cname_enabled ? '' : bucketName;
+    
     var resource = path.normalize(path.join(
         config.removeVersionPrefix ? '/' : '/v1',
         strings.normalize(bucketName || ''),
@@ -46653,6 +46656,7 @@ BosClient.prototype.sendRequest = function (httpMethod, varArgs) {
         config: {},
         outputStream: null
     };
+    varArgs.bucketName = this.config.cname_enabled ? '' : varArgs.bucketName;
     var args = u.extend(defaultArgs, varArgs);
 
     var config = u.extend({}, this.config, args.config);

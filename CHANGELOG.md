@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.0-rc.34(2021-12-15)
+
+- BOSClient: Provide cname_enabled field when using a custom domain name to delete bucketName path.
+
 ## 1.0.0-rc.33(2021-11-26)
 
 - TsdbDataClient: support database parameter.
