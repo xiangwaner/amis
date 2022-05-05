@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.0-rc.35(2022-05-05)
+
+- BOSClient: Just keep an array of all of buffers and concat at the end.
+
 ## 1.0.0-rc.34(2021-12-15)
 
 - BOSClient: Provide cname_enabled field when using a custom domain name to delete bucketName path.

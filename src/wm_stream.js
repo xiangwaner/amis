@@ -28,13 +28,13 @@ var util = require('util');
 function WMStream() {
     stream.Writable.call(this);
 
-    this.store = new Buffer('');
+    this.store = [];
 }
 util.inherits(WMStream, stream.Writable);
 
 WMStream.prototype._write = function (chunk, enc, cb) {
     var buffer = Buffer.isBuffer(chunk) ? chunk : new Buffer(chunk, enc);
-    this.store = Buffer.concat([this.store, buffer]);
+    this.store.push(buffer);
 
     cb();
 };

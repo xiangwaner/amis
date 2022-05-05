@@ -22222,7 +22222,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.5.2",
-      "/Users/hanxiao11/console-project/github/my/bce-sdk-js"
+      "/Users/tianyanbo/Workspace/baidu/bce-sdk-js"
     ]
   ],
   "_development": true,
@@ -22248,7 +22248,7 @@ module.exports={
   ],
   "_resolved": "http://registry.npm.baidu-int.com/elliptic/-/elliptic-6.5.2.tgz",
   "_spec": "6.5.2",
-  "_where": "/Users/hanxiao11/console-project/github/my/bce-sdk-js",
+  "_where": "/Users/tianyanbo/Workspace/baidu/bce-sdk-js",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -46167,7 +46167,7 @@ BosClient.prototype.getObject = function (bucketName, key, range, options) {
         config: options.config,
         outputStream: outputStream
     }).then(function (response) {
-        response.body = outputStream.store;
+        response.body = Buffer.concat(outputStream);
         return response;
     });
 };
@@ -48331,8 +48331,7 @@ Document.prototype.download = function (documentId) {
  * 1. The BOS bucket must in bj-region.
  * 2. The BOS bucket permission must be public-read.
  *
- * 用户需要将源文档所在BOS bucket权限设置为公共读，或者在自定义权限设置中为开放云文档转码服务账号
- *（沙盒：798c20fa770840438a29efd66cdccf7f，线上：183db8cd3d5a4bf9a94459f89a7a3a91）添加READ权限。
+ * 用户需要将源文档所在BOS bucket权限设置为公共读，或者在自定义权限设置中为开放云文档转码服务账号添加READ权限。
  *
  * 文档转码服务依赖文档的md5，为提高转码性能，文档转码服务需要用户为源文档指定md5；
  * 因此用户需要在上传文档至BOS时设置自定义meta header x-bce-meta-md5来记录源文档md5。
@@ -53638,13 +53637,13 @@ var util = require('util');
 function WMStream() {
     stream.Writable.call(this);
 
-    this.store = new Buffer('');
+    this.store = [];
 }
 util.inherits(WMStream, stream.Writable);
 
 WMStream.prototype._write = function (chunk, enc, cb) {
     var buffer = Buffer.isBuffer(chunk) ? chunk : new Buffer(chunk, enc);
-    this.store = Buffer.concat([this.store, buffer]);
+    this.store.push(buffer);
 
     cb();
 };
