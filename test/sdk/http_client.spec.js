@@ -235,11 +235,12 @@ describe('HttpClient', function() {
         var client = new HttpClient(config);
 
         var output_stream = new WMStream();
+        var output_stream_buffer = Buffer.concat(output_stream.store);
         return client.sendRequest('GET', '/v1', null, null, null, sign_function, output_stream)
             .then(function(response) {
                 expect(response.body).to.eql({});
-                expect(output_stream.store.length).to.be.greaterThan(0);
-                var owner = JSON.parse(output_stream.store.toString()).owner;
+                expect(output_stream_buffer.length).to.be.greaterThan(0);
+                var owner = JSON.parse(output_stream_buffer.toString()).owner;
                 expect(owner).to.eql(config.account);
             });
     });
