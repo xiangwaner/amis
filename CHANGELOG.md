@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 1.0.0-rc.36(2022-05-05)
+## 1.0.0-rc.36(2022-05-06)
 
 - BOSClient: fix getObject stream.store
 
