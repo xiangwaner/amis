@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.0-rc.36(2022-05-05)
+
+- BOSClient: fix getObject stream.store
+
 ## 1.0.0-rc.35(2022-05-05)
 
 - BOSClient: Just keep an array of all of buffers and concat at the end.

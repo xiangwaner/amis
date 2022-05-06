@@ -533,7 +533,7 @@ BosClient.prototype.getObject = function (bucketName, key, range, options) {
         config: options.config,
         outputStream: outputStream
     }).then(function (response) {
-        response.body = Buffer.concat(outputStream);
+        response.body = Buffer.concat(outputStream.store);
         return response;
     });
 };
