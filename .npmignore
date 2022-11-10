@@ -4,6 +4,9 @@ docs
 website
 node_modules
 bower_components
+example
+coverage
+
 .travis.yml
 appveyor.yml
-example
+.prettierrc
