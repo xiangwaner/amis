@@ -52164,7 +52164,7 @@ arguments[4][21][0].apply(exports,arguments)
 },{"./support/isBuffer":245,"_process":202,"dup":21,"inherits":244}],247:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.0-rc.36",
+  "version": "1.0.0-rc.37",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -53206,7 +53206,7 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
 BosClient.prototype.generateUrl = function (bucketName, key, pipeline, cdn, config) {
     config = u.extend({}, this.config, config);
     bucketName = config.cname_enabled ? '' : bucketName;
-    
+
     var resource = path.normalize(path.join(
         config.removeVersionPrefix ? '/' : '/v1',
         strings.normalize(bucketName || ''),
@@ -54210,7 +54210,10 @@ BosClient.prototype._prepareObjectHeaders = function (options) {
         H.X_BCE_GRANT_FULL_CONTROL,
         H.X_BCE_OBJECT_ACL,
         H.X_BCE_OBJECT_GRANT_READ,
-        H.X_BCE_STORAGE_CLASS
+        H.X_BCE_STORAGE_CLASS,
+        H.X_BCE_SERVER_SIDE_ENCRYPTION,
+        H.X_BCE_RESTORE_DAYS,
+        H.X_BCE_RESTORE_TIER
     ];
     var metaSize = 0;
     var headers = u.pick(options, function (value, key) {
@@ -56188,6 +56191,7 @@ exports.USER_AGENT = 'User-Agent';
 exports.CACHE_CONTROL = 'Cache-Control';
 exports.EXPIRES = 'Expires';
 
+/** BOS 相关headers */
 exports.AUTHORIZATION = 'Authorization';
 exports.X_BCE_DATE = 'x-bce-date';
 exports.X_BCE_ACL = 'x-bce-acl';
@@ -56198,6 +56202,9 @@ exports.X_BCE_CONTENT_SHA256 = 'x-bce-content-sha256';
 exports.X_BCE_OBJECT_ACL = 'x-bce-object-acl';
 exports.X_BCE_OBJECT_GRANT_READ = 'x-bce-object-grant-read';
 exports.X_BCE_STORAGE_CLASS = 'x-bce-storage-class';
+exports.X_BCE_SERVER_SIDE_ENCRYPTION = 'x-bce-server-side-encryption';
+exports.X_BCE_RESTORE_DAYS = 'x-bce-restore-days';
+exports.X_BCE_RESTORE_TIER = 'x-bce-restore-tier';
 
 exports.X_HTTP_HEADERS = 'http_headers';
 exports.X_BODY = 'body';
@@ -56212,17 +56219,6 @@ exports.X_VOD_MEDIA_TITLE = 'x-vod-media-title';
 exports.X_VOD_MEDIA_DESCRIPTION = 'x-vod-media-description';
 exports.ACCEPT_ENCODING = 'accept-encoding';
 exports.ACCEPT = 'accept';
-
-
-
-
-
-
-
-
-
-
-
 
 },{}],261:[function(require,module,exports){
 (function (Buffer){
