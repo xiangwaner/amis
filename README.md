@@ -10,10 +10,14 @@ Baidu Cloud Engine JavaScript SDK
 
 ## 通过NPM安装
 ```shell
-    npm install @baiducloud/sdk
+npm install @baiducloud/sdk
 ```
 
 ## 通过CDN引用
+
+`${version}`处使用版本号替换，比如`1.0.0-rc.37`
+
+
 ```html
-    <script src="https://bce.bdstatic.com/lib/@baiducloud/sdk/1.0.0-rc.36/baidubce-sdk.bundle.min.js" ></script>
+<script src="https://bce.bdstatic.com/lib/@baiducloud/sdk/${version}/baidubce-sdk.bundle.min.js" ></script>
 ```
