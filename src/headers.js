@@ -28,6 +28,7 @@ exports.USER_AGENT = 'User-Agent';
 exports.CACHE_CONTROL = 'Cache-Control';
 exports.EXPIRES = 'Expires';
 
+/** BOS 相关headers */
 exports.AUTHORIZATION = 'Authorization';
 exports.X_BCE_DATE = 'x-bce-date';
 exports.X_BCE_ACL = 'x-bce-acl';
@@ -38,6 +39,9 @@ exports.X_BCE_CONTENT_SHA256 = 'x-bce-content-sha256';
 exports.X_BCE_OBJECT_ACL = 'x-bce-object-acl';
 exports.X_BCE_OBJECT_GRANT_READ = 'x-bce-object-grant-read';
 exports.X_BCE_STORAGE_CLASS = 'x-bce-storage-class';
+exports.X_BCE_SERVER_SIDE_ENCRYPTION = 'x-bce-server-side-encryption';
+exports.X_BCE_RESTORE_DAYS = 'x-bce-restore-days';
+exports.X_BCE_RESTORE_TIER = 'x-bce-restore-tier';
 
 exports.X_HTTP_HEADERS = 'http_headers';
 exports.X_BODY = 'body';
@@ -52,14 +56,3 @@ exports.X_VOD_MEDIA_TITLE = 'x-vod-media-title';
 exports.X_VOD_MEDIA_DESCRIPTION = 'x-vod-media-description';
 exports.ACCEPT_ENCODING = 'accept-encoding';
 exports.ACCEPT = 'accept';
-
-
-
-
-
-
-
-
-
-
-
