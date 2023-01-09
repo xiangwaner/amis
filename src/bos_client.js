@@ -118,7 +118,7 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
 BosClient.prototype.generateUrl = function (bucketName, key, pipeline, cdn, config) {
     config = u.extend({}, this.config, config);
     bucketName = config.cname_enabled ? '' : bucketName;
-    
+
     var resource = path.normalize(path.join(
         config.removeVersionPrefix ? '/' : '/v1',
         strings.normalize(bucketName || ''),
@@ -1122,7 +1122,10 @@ BosClient.prototype._prepareObjectHeaders = function (options) {
         H.X_BCE_GRANT_FULL_CONTROL,
         H.X_BCE_OBJECT_ACL,
         H.X_BCE_OBJECT_GRANT_READ,
-        H.X_BCE_STORAGE_CLASS
+        H.X_BCE_STORAGE_CLASS,
+        H.X_BCE_SERVER_SIDE_ENCRYPTION,
+        H.X_BCE_RESTORE_DAYS,
+        H.X_BCE_RESTORE_TIER
     ];
     var metaSize = 0;
     var headers = u.pick(options, function (value, key) {
