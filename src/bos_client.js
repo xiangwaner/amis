@@ -165,6 +165,9 @@ BosClient.prototype.createBucket = function (bucketName, options) {
 
     return this.sendRequest('PUT', {
         bucketName: bucketName,
+        body: JSON.stringify({
+            enableMultiAZ: !!(options.body && options.body.enableMultiAZ)
+        }),
         config: options.config
     });
 };
