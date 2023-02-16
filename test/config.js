@@ -19,10 +19,10 @@ module.exports = {
             'ak': process.env.BOS_AK,
             'sk': process.env.BOS_SK,
         },
-        'account': {
-            'id': process.env.ONLINE_USER_ID || '04e0d2c9e8ef478c951b97714c092f77',
-            'displayName': process.env.ONLINE_USER_NAME || 'PASSPORT:105016607'
-        }
+        // 'account': {
+        //     'id': process.env.ONLINE_USER_ID || '04e0d2c9e8ef478c951b97714c092f77',
+        //     'displayName': process.env.ONLINE_USER_NAME || 'PASSPORT:105016607'
+        // }
     },
     'bcc': {
         'endpoint': 'http://bcc.bce-api.baidu.com',

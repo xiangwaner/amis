@@ -1013,6 +1013,47 @@ BosClient.prototype.postObject = function (bucketName, key, data, options) {
     });
 };
 
+/**
+ * 获取软连接，需要对软连接有读取权限，接口响应头的x-bce-symlink-target指向目标文件
+ */
+BosClient.prototype.getSymlink = function (bucketName, objectName, options) {
+    options = options || {};
+
+    return this.sendRequest('GET', {
+        bucketName,
+        key: objectName,
+        params: {symlink: ''},
+        config: options.config
+    });
+}
+
+/**
+ * 为BOS的相同bucket下已有的目的object创建软链接
+ * @param {string} bucketName 桶名称
+ * @param {string} objectName 软连接文件名称
+ * @param {string} target 目标对象名称
+ * @param {boolean} overwrite 是否覆盖同名Object，默认允许覆盖
+ */
+BosClient.prototype.putSymlink = function (bucketName, objectName, target, overwrite, options) {
+    options = options || {};
+    var headers = {};
+
+    if (!target) {
+        throw new TypeError('target object should not be empty.');
+    }
+
+    headers[H.X_BCE_SYMLINK_TARGET] = target;
+    headers[H.X_BCE_FORBID_OVERWRITE] = overwrite === true;
+
+    return this.sendRequest('PUT', {
+        bucketName,
+        key: objectName,
+        params: {symlink: ''},
+        headers: headers,
+        config: options.config
+    });
+}
+
 // --- E N D ---
 
 BosClient.prototype.sendRequest = function (httpMethod, varArgs) {
@@ -1128,7 +1169,9 @@ BosClient.prototype._prepareObjectHeaders = function (options) {
         H.X_BCE_STORAGE_CLASS,
         H.X_BCE_SERVER_SIDE_ENCRYPTION,
         H.X_BCE_RESTORE_DAYS,
-        H.X_BCE_RESTORE_TIER
+        H.X_BCE_RESTORE_TIER,
+        H.X_BCE_SYMLINK_TARGET,
+        H.X_BCE_FORBID_OVERWRITE
     ];
     var metaSize = 0;
     var headers = u.pick(options, function (value, key) {
