@@ -1,4 +1,8 @@
 # CHANGELOG
+## 1.0.0-rc.38(2023-02-16)
+
+- BosClient: support symlink;
+
 ## 1.0.0-rc.37(2023-01-09)
 
 - BosClient: support 'x-bce-server-side-encryption', 'x-bce-restore-days', 'x-bce-restore-tier' headers;

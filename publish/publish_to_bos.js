@@ -13,10 +13,10 @@ const {BosClient} = require('../');
 
 const {version, name} = require('../package.json');
 
-const {BOS_AK, BOS_SK} = process.env;
+const {BOS_AK_CDN, BOS_SK_CDN} = process.env;
 const client = new BosClient({
     endpoint: 'https://bj.bcebos.com',
-    credentials: {ak: BOS_AK, sk: BOS_SK}
+    credentials: {ak: BOS_AK_CDN, sk: BOS_SK_CDN}
 });
 
 function uploadTo(bucketName, objectName, filePath) {
@@ -44,7 +44,7 @@ function publish(distDir) {
     err => console.log(err.message));
 }
 
-if (BOS_AK && BOS_SK) {
+if (BOS_AK_CDN && BOS_SK_CDN) {
     publish(path.join(__dirname, '..', 'dist'));
 } else {
     console.log('终止发布操作，请配置环境变量BOS_AK、BOS_SK。');

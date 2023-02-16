@@ -52164,7 +52164,7 @@ arguments[4][21][0].apply(exports,arguments)
 },{"./support/isBuffer":245,"_process":202,"dup":21,"inherits":244}],247:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.0-rc.37",
+  "version": "1.0.0-rc.38",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -52177,6 +52177,7 @@ module.exports={
   "scripts": {
     "test": "./test/run-all.sh",
     "pack": "rm -rf dist/ && mkdir dist && browserify index.js -s baidubce.sdk -o dist/baidubce-sdk.bundle.js && uglifyjs dist/baidubce-sdk.bundle.js --compress --mangle -o dist/baidubce-sdk.bundle.min.js",
+    "docs": "cd example && npm run start",
     "publish:bos": "node ./publish/publish_to_bos.js"
   },
   "repository": {
@@ -52187,8 +52188,7 @@ module.exports={
     "leeight <leeight@gmail.com>",
     "木休大人 <523317421@qq.com>",
     "yangwei <yangwei9012@163.com>",
-    "lurunze <lueunze@hotmail.com>",
-    "hanxiao <hanxiao_do@126.com>"
+    "lurunze <lurunze@hotmail.com>"
   ],
   "license": "MIT",
   "dependencies": {
@@ -53253,6 +53253,9 @@ BosClient.prototype.createBucket = function (bucketName, options) {
 
     return this.sendRequest('PUT', {
         bucketName: bucketName,
+        body: JSON.stringify({
+            enableMultiAZ: !!(options.body && options.body.enableMultiAZ)
+        }),
         config: options.config
     });
 };
@@ -54098,6 +54101,47 @@ BosClient.prototype.postObject = function (bucketName, key, data, options) {
     });
 };
 
+/**
+ * 获取软连接，需要对软连接有读取权限，接口响应头的x-bce-symlink-target指向目标文件
+ */
+BosClient.prototype.getSymlink = function (bucketName, objectName, options) {
+    options = options || {};
+
+    return this.sendRequest('GET', {
+        bucketName,
+        key: objectName,
+        params: {symlink: ''},
+        config: options.config
+    });
+}
+
+/**
+ * 为BOS的相同bucket下已有的目的object创建软链接
+ * @param {string} bucketName 桶名称
+ * @param {string} objectName 软连接文件名称
+ * @param {string} target 目标对象名称
+ * @param {boolean} overwrite 是否覆盖同名Object，默认允许覆盖
+ */
+BosClient.prototype.putSymlink = function (bucketName, objectName, target, overwrite, options) {
+    options = options || {};
+    var headers = {};
+
+    if (!target) {
+        throw new TypeError('target object should not be empty.');
+    }
+
+    headers[H.X_BCE_SYMLINK_TARGET] = target;
+    headers[H.X_BCE_FORBID_OVERWRITE] = overwrite === true;
+
+    return this.sendRequest('PUT', {
+        bucketName,
+        key: objectName,
+        params: {symlink: ''},
+        headers: headers,
+        config: options.config
+    });
+}
+
 // --- E N D ---
 
 BosClient.prototype.sendRequest = function (httpMethod, varArgs) {
@@ -54213,7 +54257,9 @@ BosClient.prototype._prepareObjectHeaders = function (options) {
         H.X_BCE_STORAGE_CLASS,
         H.X_BCE_SERVER_SIDE_ENCRYPTION,
         H.X_BCE_RESTORE_DAYS,
-        H.X_BCE_RESTORE_TIER
+        H.X_BCE_RESTORE_TIER,
+        H.X_BCE_SYMLINK_TARGET,
+        H.X_BCE_FORBID_OVERWRITE
     ];
     var metaSize = 0;
     var headers = u.pick(options, function (value, key) {
@@ -56205,6 +56251,8 @@ exports.X_BCE_STORAGE_CLASS = 'x-bce-storage-class';
 exports.X_BCE_SERVER_SIDE_ENCRYPTION = 'x-bce-server-side-encryption';
 exports.X_BCE_RESTORE_DAYS = 'x-bce-restore-days';
 exports.X_BCE_RESTORE_TIER = 'x-bce-restore-tier';
+exports.X_BCE_SYMLINK_TARGET = 'x-bce-symlink-target';
+exports.X_BCE_FORBID_OVERWRITE = 'x-bce-forbid-overwrite';
 
 exports.X_HTTP_HEADERS = 'http_headers';
 exports.X_BODY = 'body';
