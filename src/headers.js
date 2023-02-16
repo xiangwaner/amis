@@ -42,6 +42,8 @@ exports.X_BCE_STORAGE_CLASS = 'x-bce-storage-class';
 exports.X_BCE_SERVER_SIDE_ENCRYPTION = 'x-bce-server-side-encryption';
 exports.X_BCE_RESTORE_DAYS = 'x-bce-restore-days';
 exports.X_BCE_RESTORE_TIER = 'x-bce-restore-tier';
+exports.X_BCE_SYMLINK_TARGET = 'x-bce-symlink-target';
+exports.X_BCE_FORBID_OVERWRITE = 'x-bce-forbid-overwrite';
 
 exports.X_HTTP_HEADERS = 'http_headers';
 exports.X_BODY = 'body';
