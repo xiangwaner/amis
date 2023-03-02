@@ -44,6 +44,7 @@ exports.X_BCE_RESTORE_DAYS = 'x-bce-restore-days';
 exports.X_BCE_RESTORE_TIER = 'x-bce-restore-tier';
 exports.X_BCE_SYMLINK_TARGET = 'x-bce-symlink-target';
 exports.X_BCE_FORBID_OVERWRITE = 'x-bce-forbid-overwrite';
+exports.X_BCE_TRAFFIC_LIMIT = 'x-bce-traffic-limit';
 
 exports.X_HTTP_HEADERS = 'http_headers';
 exports.X_BODY = 'body';

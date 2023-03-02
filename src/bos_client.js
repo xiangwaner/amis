@@ -525,14 +525,24 @@ BosClient.prototype.getObject = function (bucketName, key, range, options) {
     }
 
     options = options || {};
+    var headers = {}
+    if (options[H.X_BCE_TRAFFIC_LIMIT]) {
+        const limit = options[H.X_BCE_TRAFFIC_LIMIT];
+
+        if (typeof limit !== 'number' || limit < 819200 || limit > 838860800) {
+            throw new TypeError('x-bce-traffic-limit range should be 819200~838860800');
+        }
+
+        headers[H.X_BCE_TRAFFIC_LIMIT] = limit;
+    }
 
     var outputStream = new WMStream();
     return this.sendRequest('GET', {
         bucketName: bucketName,
         key: key,
-        headers: {
+        headers: u.extend({
             Range: range ? util.format('bytes=%s', range) : ''
-        },
+        }, headers),
         config: options.config,
         outputStream: outputStream
     }).then(function (response) {
@@ -1002,9 +1012,18 @@ BosClient.prototype.postObject = function (bucketName, key, data, options) {
     multipart.addPart('file', data);
 
     var body = multipart.encode();
-
     var headers = {};
     headers[H.CONTENT_TYPE] = contentType;
+
+    if (options[H.X_BCE_TRAFFIC_LIMIT]) {
+        const limit = options[H.X_BCE_TRAFFIC_LIMIT];
+
+        if (typeof limit !== 'number' || limit < 819200 || limit > 838860800) {
+            throw new TypeError('x-bce-traffic-limit range should be 819200~838860800');
+        }
+
+        headers[H.X_BCE_TRAFFIC_LIMIT] = limit;
+    }
 
     return this.sendRequest('POST', {
         bucketName: bucketName,
@@ -1171,7 +1190,8 @@ BosClient.prototype._prepareObjectHeaders = function (options) {
         H.X_BCE_RESTORE_DAYS,
         H.X_BCE_RESTORE_TIER,
         H.X_BCE_SYMLINK_TARGET,
-        H.X_BCE_FORBID_OVERWRITE
+        H.X_BCE_FORBID_OVERWRITE,
+        H.X_BCE_TRAFFIC_LIMIT
     ];
     var metaSize = 0;
     var headers = u.pick(options, function (value, key) {
