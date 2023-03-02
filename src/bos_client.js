@@ -1073,6 +1073,57 @@ BosClient.prototype.putSymlink = function (bucketName, objectName, target, overw
     });
 }
 
+
+/**
+ * 设置用户的Quota
+ *
+ * @param {number} maxBucketCount 最大可以创建的Bucket数，若为-1，则表示不设置
+ * @param {number} maxCapacityMegaBytes 单位为MB，表示最大的存储容量，若为-1或者0，表示不设置存储容量额度限制，即无上限
+ *
+ */
+BosClient.prototype.putUserQuota = function (maxBucketCount, maxCapacityMegaBytes, options) {
+    options = options || {};
+
+    if (maxBucketCount == null || maxCapacityMegaBytes == null) {
+        throw new TypeError('maxBucketCount or maxCapacityMegaBytes should not be empty.');
+    }
+
+    if (typeof maxBucketCount !== 'number' || typeof maxCapacityMegaBytes !== 'number') {
+        throw new TypeError('maxBucketCount or maxCapacityMegaBytes should not be number.');
+    }
+
+    return this.sendRequest('PUT', {
+        params: {userQuota: ''},
+        body: JSON.stringify({maxBucketCount, maxCapacityMegaBytes}),
+        config: options.config
+    });
+}
+
+/**
+ * 获取用户的Quota
+ */
+BosClient.prototype.getUserQuota = function (options) {
+    options = options || {};
+
+    return this.sendRequest('GET', {
+        params: {userQuota: ''},
+        config: options.config
+    });
+}
+
+/**
+ * 删除额度设置
+ */
+BosClient.prototype.deleteUserQuota = function (options) {
+    options = options || {};
+
+    return this.sendRequest('DELETE', {
+        params: {userQuota: ''},
+        config: options.config
+    });
+}
+
+
 // --- E N D ---
 
 BosClient.prototype.sendRequest = function (httpMethod, varArgs) {
