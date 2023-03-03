@@ -1033,6 +1033,46 @@ BosClient.prototype.postObject = function (bucketName, key, data, options) {
 };
 
 /**
+ * 取回归档存储文件，请求者必须有归档存储文件的读权限，并且归档存储文件处于冰冻状态
+ * @doc https://cloud.baidu.com/doc/BOS/s/akc5t3f12
+ * @param {string} bucketName 桶名称
+ * @param {string} objectName 对象名称
+ */
+BosClient.prototype.restoreObject = function (bucketName, objectName, options) {
+    if (!objectName) {
+        throw new TypeError('objectName should not be empty.');
+    }
+
+    options = this._checkOptions(options || {});
+    var headers = options.headers;
+
+    if (headers.hasOwnProperty(H.X_BCE_RESTORE_DAYS)) {
+        const restoreDays = headers[H.X_BCE_RESTORE_DAYS];
+
+        if (!u.isNumber(restoreDays) || restoreDays < 0 || restoreDays > 30) {
+            throw new TypeError('x-bce-restore-days should be an integer with range of 0 ~ 30');
+        }
+    }
+
+    if (headers.hasOwnProperty(H.X_BCE_RESTORE_TIER)) {
+        const restoreTier = headers[H.X_BCE_RESTORE_TIER];
+        const restoreTierEnum = ['Expedited', 'Standard', 'LowCost'];
+
+        if (!~restoreTierEnum.indexOf(restoreTier)) {
+            throw new TypeError('x-bce-restore-tier should be ' + restoreTierEnum.join(', '));
+        }
+    }
+
+    return this.sendRequest('POST', {
+        bucketName,
+        key: objectName,
+        params: {restore: ''},
+        headers: options.headers,
+        config: options.config
+    })
+}
+
+/**
  * 获取软连接，需要对软连接有读取权限，接口响应头的x-bce-symlink-target指向目标文件
  */
 BosClient.prototype.getSymlink = function (bucketName, objectName, options) {
