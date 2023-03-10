@@ -354,6 +354,29 @@ BosClient.prototype.putObjectCannedAcl = function (bucketName, key, cannedAcl, o
     });
 };
 
+/**
+ * 删除某个Object的访问权限
+ *
+ * @param {string} bucketName 桶名称
+ * @param {string} objectName 文件名称
+ */
+BosClient.prototype.deleteObjectAcl = function (bucketName, objectName, options) {
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    if (!objectName) {
+        throw new TypeError('objectName should not be empty.');
+    }
+
+    return this.sendRequest('DELETE', {
+        bucketName: bucketName,
+        key: objectName,
+        params: {acl: ''},
+        config: options.config
+    });
+}
+
 
 BosClient.prototype.getBucketLocation = function (bucketName, options) {
     options = options || {};
@@ -1163,6 +1186,68 @@ BosClient.prototype.deleteUserQuota = function (options) {
     });
 }
 
+/**
+ * 从指定url抓取资源
+ *
+ * @param {string} bucketName 桶名称
+ * @param {string} objectName 文件名称
+ */
+BosClient.prototype.fetchObject = function (bucketName, objectName, options) {
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    if (!objectName) {
+        throw new TypeError('objectName should not be empty.');
+    }
+
+    options = this._checkOptions(options || {}, [H.X_BCE_FETCH_SOURCE]);
+    var headers = options.headers;
+
+    if (!headers[H.X_BCE_FETCH_SOURCE] || options.params[H.X_BCE_FETCH_SOURCE]) {
+        throw new TypeError('x-bce-fetch-source should not be empty, at least in query string or headers.');
+    }
+
+    return this.sendRequest('POST', {
+        bucketName,
+        key: objectName,
+        params: u.extend({fetch: ''}, qs.encode(options.params)),
+        headers: headers,
+        config: options.config
+    });
+}
+
+/**
+ * 浏览器在发送跨域请求之前会发送一个preflight请求（OPTIONS）并带上特定的来源域, OPTIONS Object操作不需要进行鉴权。
+ */
+BosClient.prototype.optionsObject = function (bucketName, objectName, options) {
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    if (!objectName) {
+        throw new TypeError('objectName should not be empty.');
+    }
+
+    options = this._checkOptions(options || {});
+    var headers = options.headers;
+
+    if (!headers.hasOwnProperty(H.ORIGIN)) {
+        throw new TypeError('Origin should not be empty.');
+    }
+
+    if (!headers.hasOwnProperty(H.ACCESS_CONTROL_REQUEST_METHOD)) {
+        throw new TypeError('Access-Control-Request-Method should not be empty.');
+    }
+
+    return this.sendRequest('OPTIONS', {
+        bucketName,
+        key: objectName,
+        headers: headers,
+        config: options.config
+    });
+}
+
 
 // --- E N D ---
 
@@ -1261,6 +1346,9 @@ BosClient.prototype._checkOptions = function (options, allowedParams) {
 
 BosClient.prototype._prepareObjectHeaders = function (options) {
     var allowedHeaders = [
+        H.ORIGIN,
+        H.ACCESS_CONTROL_REQUEST_METHOD,
+        H.ACCESS_CONTROL_REQUEST_HEADERS,
         H.CONTENT_LENGTH,
         H.CONTENT_ENCODING,
         H.CONTENT_MD5,
@@ -1282,7 +1370,12 @@ BosClient.prototype._prepareObjectHeaders = function (options) {
         H.X_BCE_RESTORE_TIER,
         H.X_BCE_SYMLINK_TARGET,
         H.X_BCE_FORBID_OVERWRITE,
-        H.X_BCE_TRAFFIC_LIMIT
+        H.X_BCE_TRAFFIC_LIMIT,
+        H.X_BCE_FETCH_SOURCE,
+        H.X_BCE_FETCH_MODE,
+        H.X_BCE_CALLBACK_ADDRESS,
+        H.X_BCE_FETCH_REFERER,
+        H.X_BCE_FETCH_USER_AGENT
     ];
     var metaSize = 0;
     var headers = u.pick(options, function (value, key) {
