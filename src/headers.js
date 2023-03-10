@@ -27,6 +27,9 @@ exports.HOST = 'Host';
 exports.USER_AGENT = 'User-Agent';
 exports.CACHE_CONTROL = 'Cache-Control';
 exports.EXPIRES = 'Expires';
+exports.ORIGIN = 'Origin';
+exports.ACCESS_CONTROL_REQUEST_METHOD = 'Access-Control-Request-Method';
+exports.ACCESS_CONTROL_REQUEST_HEADERS = 'Access-Control-Request-Headers';
 
 /** BOS 相关headers */
 exports.AUTHORIZATION = 'Authorization';
@@ -45,6 +48,12 @@ exports.X_BCE_RESTORE_TIER = 'x-bce-restore-tier';
 exports.X_BCE_SYMLINK_TARGET = 'x-bce-symlink-target';
 exports.X_BCE_FORBID_OVERWRITE = 'x-bce-forbid-overwrite';
 exports.X_BCE_TRAFFIC_LIMIT = 'x-bce-traffic-limit';
+exports.X_BCE_FETCH_SOURCE = 'x-bce-fetch-source';
+exports.X_BCE_FETCH_MODE = 'x-bce-fetch-mode';
+exports.X_BCE_CALLBACK_ADDRESS = 'x-bce-callback-address';
+exports.X_BCE_FETCH_REFERER = 'x-bce-fetch-referer';
+exports.X_BCE_FETCH_USER_AGENT = 'x-bce-fetch-user-agent';
+
 
 exports.X_HTTP_HEADERS = 'http_headers';
 exports.X_BODY = 'body';
