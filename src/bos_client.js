@@ -444,10 +444,120 @@ BosClient.prototype.deleteBucketLogging = function (bucketName, options) {
     });
 }
 
-// BosClient.prototype.getBucketReplicationProgress =
-// BosClient.prototype.deleteBucketReplication =
-// BosClient.prototype.getBucketReplication =
-// BosClient.prototype.putBucketReplication =
+/**
+ * 创建数据同步
+ * @doc https://cloud.baidu.com/doc/BOS/s/fkc4evoy4
+ */
+BosClient.prototype.putBucketReplication = function (bucketName, body, options) {
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    options = options || {};
+    body = u.pick(body || {}, ['status', 'resource', 'destination', 'replicateHistory', 'replicateDeletes', 'id']);
+
+    if (!body.id || !body.status || !body.resource || !body.destination || !body.replicateDeletes) {
+        throw new TypeError('field "id", "status", "resource", "destination", "replicateHistory", "replicateDeletes" should not be empty.');
+    }
+
+    if (!body.destination.bucket) {
+        throw new TypeError('target bucket name should not be empty.');
+    }
+
+    return this.sendRequest('PUT', {
+        bucketName: bucketName,
+        params: {replication: '', id: body.id},
+        body: JSON.stringify(body),
+        config: options.config
+    });
+}
+
+/**
+ * 获取bucket指定id的数据同步信息
+ * @doc https://cloud.baidu.com/doc/BOS/s/7kc4ewr1u
+ */
+BosClient.prototype.getBucketReplication = function (bucketName, id, options) {
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    if (id) {
+        throw new TypeError('replication id should not be empty.');
+    }
+
+    options = options || {};
+
+    return this.sendRequest('GET', {
+        bucketName: bucketName,
+        params: {replication: '', id},
+        config: options.config
+    });
+}
+
+/**
+ * 获取指定id的数据同步复制的进程状态
+ * @doc https://cloud.baidu.com/doc/BOS/s/ekc4eyua6
+ */
+BosClient.prototype.getBucketReplicationProgress = function (bucketName, id, options) {
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    if (id) {
+        throw new TypeError('replication id should not be empty.');
+    }
+
+    options = options || {};
+
+    return this.sendRequest('GET', {
+        bucketName: bucketName,
+        params: {replicationProgress: '', id},
+        config: options.config
+    });
+}
+
+
+/**
+ * 删除对应id的数据同步复制配置
+ * @doc https://cloud.baidu.com/doc/BOS/s/dkc4exqvg
+ */
+BosClient.prototype.deleteBucketReplication = function (bucketName, id, options) {
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    if (id) {
+        throw new TypeError('replication id should not be empty.');
+    }
+
+    options = options || {};
+
+    return this.sendRequest('DELETE', {
+        bucketName: bucketName,
+        params: {replication: '', id},
+        config: options.config
+    });
+}
+
+/**
+ * 获取bucket所有的replication同步规则
+ * @doc https://cloud.baidu.com/doc/BOS/s/Vkcoek9t5
+ */
+BosClient.prototype.listBucketReplication = function (bucketName, options) {
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    options = options || {};
+
+    return this.sendRequest('GET', {
+        bucketName: bucketName,
+        params: {replication: '', list: ''},
+        config: options.config
+    });
+}
+
+
 // BosClient.prototype.deleteBucket =
 // BosClient.prototype.headBucket = function() {
 //     throw new Error("Method not implemented.");
