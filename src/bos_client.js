@@ -317,9 +317,68 @@ BosClient.prototype.putBucketStorageclass = function (bucketName, storageClass, 
         config: options.config
     });
 };
-// BosClient.prototype.deleteBucketLifecycle =
-// BosClient.prototype.getBucketLifecycle =
-// BosClient.prototype.putBucketLifecycle =
+
+/**
+ * 创建生命周期管理规则
+ * @doc https://cloud.baidu.com/doc/BOS/s/Vkc4f2c1y
+ */
+BosClient.prototype.putBucketLifecycle = function (bucketName, body, options) {
+    options = options || {};
+    body = u.pick(body || {}, ['rule']);
+
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    if (!Array.isArray(body.rule)) {
+        throw new TypeError('rule should not an array.');
+    }
+
+    return this.sendRequest('PUT', {
+        bucketName: bucketName,
+        params: {lifecycle: ''},
+        body: JSON.stringify(body),
+        config: options.config
+    });
+
+
+}
+
+/**
+ * 获取定义的生命周期管理规则详细信息
+ * @doc https://cloud.baidu.com/doc/BOS/s/skc4f3bs0
+ */
+BosClient.prototype.getBucketLifecycle = function (bucketName, options) {
+    options = options || {};
+
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    return this.sendRequest('GET', {
+        bucketName: bucketName,
+        params: {lifecycle: ''},
+        config: options.config
+    });
+}
+
+/**
+ * 删除定义的生命周期管理规则
+ * @doc https://cloud.baidu.com/doc/BOS/s/mkc4f5k1x
+ */
+BosClient.prototype.deleteBucketLifecycle = function (bucketName, options) {
+    options = options || {};
+
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    return this.sendRequest('DELETE', {
+        bucketName: bucketName,
+        params: {lifecycle: ''},
+        config: options.config
+    });
+}
 
 /**
  * 开启Bucket的访问日志并指定存放日志的Bucket和访问日志的文件前缀
@@ -1424,9 +1483,6 @@ BosClient.prototype.optionsObject = function (bucketName, objectName, options) {
         config: options.config
     });
 }
-
-
-
 
 
 // --- E N D ---
