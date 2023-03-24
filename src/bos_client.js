@@ -181,12 +181,129 @@ BosClient.prototype.createBucket = function (bucketName, options) {
 // BosClient.prototype.deleteBucketTrash =
 // BosClient.prototype.getBucketTrash =
 // BosClient.prototype.putBucketTrash =
-// BosClient.prototype.putBucketStaticWebsite =
-// BosClient.prototype.getBucketStaticWebsite =
-// BosClient.prototype.deleteBucketStaticWebsite =
-// BosClient.prototype.deleteBucketEncryption =
-// BosClient.prototype.getBucketEncryption =
-// BosClient.prototype.putBucketEncryption =
+/**
+ * 设置静态网站托管
+ * @doc https://cloud.baidu.com/doc/BOS/s/jkc4fl181
+ */
+BosClient.prototype.putBucketStaticWebsite = function (bucketName, body, options) {
+    options = options || {};
+    body = u.pick(body || {}, ['index', 'notFound']);
+
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    if (body.index && typeof body.index !== 'string') {
+        throw new TypeError('field "index" should be a string.');
+    }
+
+    if (body.notFound && typeof body.notFound !== 'string') {
+        throw new TypeError('field "notFound" should be a string.');
+    }
+
+    return this.sendRequest('PUT', {
+        bucketName: bucketName,
+        params: {website: ''},
+        body: JSON.stringify(body),
+        config: options.config
+    });
+}
+
+/**
+ * 获取bucket的静态网站托管信息
+ * @doc https://cloud.baidu.com/doc/BOS/s/Xkc4fmkit
+ */
+BosClient.prototype.getBucketStaticWebsite = function (bucketName, options) {
+    options = options || {};
+
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    return this.sendRequest('GET', {
+        bucketName: bucketName,
+        params: {website: ''},
+        config: options.config
+    });
+}
+
+/**
+ * 删除bucket设置的静态网站托管信息，并关闭此bucket的静态网站托管
+ * @doc https://cloud.baidu.com/doc/BOS/s/9kc4ftbgn
+ */
+BosClient.prototype.deleteBucketStaticWebsite = function (bucketName, options) {
+    options = options || {};
+
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    return this.sendRequest('DELETE', {
+        bucketName: bucketName,
+        params: {website: ''},
+        config: options.config
+    });
+}
+
+/**
+ * 开启指定Bucket的加密开关
+ * @doc https://cloud.baidu.com/doc/BOS/s/9kc4f9eqx
+ */
+BosClient.prototype.putBucketEncryption = function (bucketName, options) {
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    options = this._checkOptions(options || {});
+
+    if (!options.headers.encryptionAlgorithm) {
+        throw new TypeError('encryptionAlgorithm should not be empty.');
+    }
+
+    return this.sendRequest('PUT', {
+        bucketName: bucketName,
+        params: {encryption: ''},
+        headers: options.headers,
+        config: options.config
+    });
+}
+
+/**
+ * 判断Bucket服务端加密是否打开
+ * @doc https://cloud.baidu.com/doc/BOS/s/Zkc4fa6x5
+ */
+BosClient.prototype.getBucketEncryption = function (bucketName, options) {
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    options = options || {};
+
+    return this.sendRequest('GET', {
+        bucketName: bucketName,
+        params: {encryption: ''},
+        config: options.config
+    });
+}
+
+/**
+ * 关闭服务端加密功能
+ * @doc https://cloud.baidu.com/doc/BOS/s/ukc4fdis4
+ */
+BosClient.prototype.deleteBucketEncryption = function (bucketName, options) {
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    options = options || {};
+
+    return this.sendRequest('DELETE', {
+        bucketName: bucketName,
+        params: {encryption: ''},
+        config: options.config
+    });
+}
+
 // BosClient.prototype.getBucketStorageclass =
 BosClient.prototype.putBucketStorageclass = function (bucketName, storageClass, options) {
     options = options || {};
@@ -203,8 +320,71 @@ BosClient.prototype.putBucketStorageclass = function (bucketName, storageClass, 
 // BosClient.prototype.deleteBucketLifecycle =
 // BosClient.prototype.getBucketLifecycle =
 // BosClient.prototype.putBucketLifecycle =
-// BosClient.prototype.deleteBucketLogging =
-// BosClient.prototype.putBucketLogging =
+
+/**
+ * 开启Bucket的访问日志并指定存放日志的Bucket和访问日志的文件前缀
+ * @doc https://cloud.baidu.com/doc/BOS/s/Wkc4ezpiy
+ */
+BosClient.prototype.putBucketLogging = function (bucketName, body, options) {
+    options = options || {};
+    body = u.pick(body || {}, ['targetBucket', 'targetPrefix']);
+
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    if (body.targetPrefix && typeof body.targetPrefix !== 'string') {
+        throw new TypeError('targetPrefix should be a string.');
+    }
+
+    if (!body.targetBucket) {
+        body.targetBucket = bucketName;
+    }
+
+    return this.sendRequest('PUT', {
+        bucketName: bucketName,
+        params: {logging: ''},
+        body: JSON.stringify(body),
+        config: options.config
+    });
+}
+
+/**
+ * 获取Bucket的访问日志配置
+ * @doc https://cloud.baidu.com/doc/BOS/s/ukc4f0uif
+ */
+BosClient.prototype.getBucketLogging = function (bucketName, options) {
+    options = options || {};
+
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    return this.sendRequest('GET', {
+        bucketName: bucketName,
+        params: {logging: ''},
+        config: options.config
+    });
+}
+
+/**
+ * 关闭Bucket访问日志记录功能
+ * @doc https://cloud.baidu.com/doc/BOS/s/qkc4f1p2v
+ */
+BosClient.prototype.deleteBucketLogging = function (bucketName, options) {
+    options = options || {};
+
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    return this.sendRequest('DELETE', {
+        bucketName: bucketName,
+        params: {logging: ''},
+        config: options.config
+    });
+}
+
 // BosClient.prototype.getBucketReplicationProgress =
 // BosClient.prototype.deleteBucketReplication =
 // BosClient.prototype.getBucketReplication =
@@ -1139,25 +1319,22 @@ BosClient.prototype.putSymlink = function (bucketName, objectName, target, overw
 
 /**
  * 设置用户的Quota
- *
- * @param {number} maxBucketCount 最大可以创建的Bucket数，若为-1，则表示不设置
- * @param {number} maxCapacityMegaBytes 单位为MB，表示最大的存储容量，若为-1或者0，表示不设置存储容量额度限制，即无上限
- *
  */
-BosClient.prototype.putUserQuota = function (maxBucketCount, maxCapacityMegaBytes, options) {
+BosClient.prototype.putUserQuota = function (body, options) {
     options = options || {};
+    body = u.pick(body || {}, ['maxBucketCount', 'maxCapacityMegaBytes']);
 
-    if (maxBucketCount == null || maxCapacityMegaBytes == null) {
+    if (body.maxBucketCount == null || body.maxCapacityMegaBytes == null) {
         throw new TypeError('maxBucketCount or maxCapacityMegaBytes should not be empty.');
     }
 
-    if (typeof maxBucketCount !== 'number' || typeof maxCapacityMegaBytes !== 'number') {
+    if (typeof body.maxBucketCount !== 'number' || typeof body.maxCapacityMegaBytes !== 'number') {
         throw new TypeError('maxBucketCount or maxCapacityMegaBytes should not be number.');
     }
 
     return this.sendRequest('PUT', {
         params: {userQuota: ''},
-        body: JSON.stringify({maxBucketCount, maxCapacityMegaBytes}),
+        body: JSON.stringify(body),
         config: options.config
     });
 }
@@ -1247,6 +1424,9 @@ BosClient.prototype.optionsObject = function (bucketName, objectName, options) {
         config: options.config
     });
 }
+
+
+
 
 
 // --- E N D ---
