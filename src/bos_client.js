@@ -1484,6 +1484,36 @@ BosClient.prototype.optionsObject = function (bucketName, objectName, options) {
     });
 }
 
+/**
+ * 向Bucket中指定object执行SQL语句，选取出指定内容返回
+ * @doc https://cloud.baidu.com/doc/BOS/s/Xkc5t84nz
+ */
+BosClient.prototype.selectObject = function (bucketName, objectName, body, options) {
+    if (!bucketName) {
+        throw new TypeError('bucketName should not be empty.');
+    }
+
+    if (!objectName) {
+        throw new TypeError('objectName should not be empty.');
+    }
+
+    options = this._checkOptions(options || {});
+    body = u.pick(body || {}, ['selectRequest', 'type']);
+
+    if (!type || !~['json', 'csv'].indexOf(body.type)) {
+        throw new TypeError('field "type" should be one of "json" and "csv".');
+    }
+
+    return this.sendRequest('POST', {
+        bucketName,
+        key: objectName,
+        params: u.extend({select: '', type: body.type}),
+        body: JSON.stringify({selectRequest: body.selectRequest}),
+        headers: options.headers,
+        config: options.config
+    });
+}
+
 
 // --- E N D ---
 
