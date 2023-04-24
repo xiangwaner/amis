@@ -355,6 +355,17 @@ setSchemaTpl('treeOptionControl', {
   type: 'ae-treeOptionControl'
 });
 
+/**
+ * 轮播图组件选项控件
+ */
+setSchemaTpl('carouselOptionControl', {
+  label: '数据',
+  mode: 'normal',
+  name: 'options',
+  type: 'ae-carouselOptionControl',
+  closeDefaultCheck: true
+});
+
 setSchemaTpl('dataMap', {
   type: 'container',
   body: [

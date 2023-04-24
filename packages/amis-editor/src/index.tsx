@@ -161,6 +161,7 @@ import './plugin/ColumnToggler';
 
 import {GridPlugin} from './plugin/Grid';
 
+import './renderer/CarouselOptionControl';
 import './renderer/OptionControl';
 import './renderer/NavSourceControl';
 import './renderer/NavBadgeControl';

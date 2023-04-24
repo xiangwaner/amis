@@ -225,7 +225,7 @@ export class Carousel extends React.Component<CarouselProps, CarouselState> {
 
     if (!!~['next', 'prev'].indexOf(actionType)) {
       this.autoSlide(actionType);
-    } else if (actionType === 'goto-image') {
+    } else if (actionType === 'goto-image' || actionType === 'gotoImage') {
       this.changeSlide((args as any)?.activeIndex - 1);
     }
   }

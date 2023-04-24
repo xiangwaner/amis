@@ -112,8 +112,8 @@ itemSchema: {
     "thumbMode": "cover",
     "animation": "slide",
     "multiple": {count: 3},
-    "interval": 1000,
-    "duration": 5000,
+    "interval": 5000,
+    "duration": 1000,
     "height": 300,
     "options": [
         {
