@@ -68,7 +68,6 @@ export class CarouselPlugin extends BasePlugin {
                   label: '数据源',
                   name: '__mode',
                   type: 'button-group-select',
-                  size: 'sm',
                   options: [
                     {
                       label: '关联字段',
@@ -178,7 +177,6 @@ export class CarouselPlugin extends BasePlugin {
                   name: 'controlsTheme',
                   label: '切换按钮主题',
                   type: 'button-group-select',
-                  size: 'sm',
                   pipeIn: defaultValue('light'),
                   options: [
                     {
