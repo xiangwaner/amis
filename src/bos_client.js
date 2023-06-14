@@ -112,6 +112,10 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
 
     params.authorization = authorization;
 
+    if (config.sessionToken) {
+        params['x-bce-security-token'] = config.sessionToken;
+    }
+    
     return util.format('%s%s?%s', config.endpoint, resource, qs.encode(params));
 };
 
@@ -949,6 +953,7 @@ BosClient.prototype.getObjectToFile = function (bucketName, key, filename, range
         outputStream: fs.createWriteStream(filename)
     });
 };
+
 
 BosClient.prototype.copyObject = function (sourceBucketName, sourceKey, targetBucketName, targetKey, options) {
     /* eslint-disable */
