@@ -1,4 +1,7 @@
 # CHANGELOG
+## 1.0.0-rc.39(2023-06-14)
+
+- BosClient: Add 'x-bce-security-token' when using generatePresignedUrl with sessionToken;
 ## 1.0.0-rc.38(2023-02-16)
 
 - BosClient: support symlink;
