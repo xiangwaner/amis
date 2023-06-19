@@ -52164,7 +52164,7 @@ arguments[4][21][0].apply(exports,arguments)
 },{"./support/isBuffer":245,"_process":202,"dup":21,"inherits":244}],247:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.0-rc.39",
+  "version": "1.0.0-rc.40",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -53194,15 +53194,17 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
 
     var credentials = config.credentials;
     var auth = new Auth(credentials.ak, credentials.sk);
+
+    if (config.sessionToken) {
+        params['x-bce-security-token'] = config.sessionToken;
+    }
+
     var authorization = auth.generateAuthorization(
         'GET', resource, params, headers, timestamp, expirationInSeconds,
         headersToSign);
 
     params.authorization = authorization;
 
-    if (config.sessionToken) {
-        params['x-bce-security-token'] = config.sessionToken;
-    }
     
     return util.format('%s%s?%s', config.endpoint, resource, qs.encode(params));
 };
@@ -54761,7 +54763,6 @@ BosClient.prototype.sendHTTPRequest = function (httpMethod, resource, args, conf
 
     function doRequest() {
         var agent = this._httpAgent = new HttpClient(config);
-
         var httpContext = {
             httpMethod: httpMethod,
             resource: resource,

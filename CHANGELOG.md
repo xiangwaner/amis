@@ -1,4 +1,9 @@
 # CHANGELOG
+
+## 1.0.0-rc.40(2023-06-19)
+
+- BosClient: 'x-bce-security-token' considered in auth token.
+
 ## 1.0.0-rc.39(2023-06-16)
 
 - BosClient: Add 'x-bce-security-token' when using generatePresignedUrl with sessionToken;
