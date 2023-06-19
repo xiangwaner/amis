@@ -106,15 +106,17 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
 
     var credentials = config.credentials;
     var auth = new Auth(credentials.ak, credentials.sk);
+
+    if (config.sessionToken) {
+        params['x-bce-security-token'] = config.sessionToken;
+    }
+
     var authorization = auth.generateAuthorization(
         'GET', resource, params, headers, timestamp, expirationInSeconds,
         headersToSign);
 
     params.authorization = authorization;
 
-    if (config.sessionToken) {
-        params['x-bce-security-token'] = config.sessionToken;
-    }
     
     return util.format('%s%s?%s', config.endpoint, resource, qs.encode(params));
 };
@@ -1673,7 +1675,6 @@ BosClient.prototype.sendHTTPRequest = function (httpMethod, resource, args, conf
 
     function doRequest() {
         var agent = this._httpAgent = new HttpClient(config);
-
         var httpContext = {
             httpMethod: httpMethod,
             resource: resource,
