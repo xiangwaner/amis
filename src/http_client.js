@@ -79,7 +79,7 @@ HttpClient.prototype.sendRequest = function (httpMethod, path, body, headers, pa
 
     // Prepare the request headers.
     var defaultHeaders = {};
-    if (typeof navigator === 'object') {
+    if (typeof navigator === 'object' && navigator.userAgent) {
         defaultHeaders[H.USER_AGENT] = navigator.userAgent;
     }
     else {
