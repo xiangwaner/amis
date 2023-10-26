@@ -50,16 +50,21 @@ function Auth(ak, sk) {
  *
  * @return {string} The signature.
  */
-Auth.prototype.generateAuthorization = function (method, resource, params,
-                                                 headers, timestamp, expirationInSeconds, headersToSign) {
-
-    var now = timestamp ? new Date(timestamp * 1000) : new Date();
-    var rawSessionKey = util.format('bce-auth-v1/%s/%s/%d',
-        this.ak, now.toISOString().replace(/\.\d+Z$/, 'Z'), expirationInSeconds || 1800);
+Auth.prototype.generateAuthorization = function (
+    method,
+    resource,
+    params,
+    headers,
+    timestamp,
+    expirationInSeconds,
+    headersToSign
+) {
+    var now = this.getTimestamp(timestamp);
+    var rawSessionKey = util.format('bce-auth-v1/%s/%s/%d', this.ak, now, expirationInSeconds || 1800);
     debug('rawSessionKey = %j', rawSessionKey);
     var sessionKey = this.hash(rawSessionKey, this.sk);
 
-    var canonicalUri = this.uriCanonicalization(resource);
+    var canonicalUri = this.generateCanonicalUri(resource);
     var canonicalQueryString = this.queryStringCanonicalization(params || {});
 
     var rv = this.headersCanonicalization(headers || {}, headersToSign);
@@ -70,8 +75,7 @@ Auth.prototype.generateAuthorization = function (method, resource, params,
     debug('canonicalHeaders = %j', canonicalHeaders);
     debug('signedHeaders = %j', signedHeaders);
 
-    var rawSignature = util.format('%s\n%s\n%s\n%s',
-        method, canonicalUri, canonicalQueryString, canonicalHeaders);
+    var rawSignature = util.format('%s\n%s\n%s\n%s', method, canonicalUri, canonicalQueryString, canonicalHeaders);
     debug('rawSignature = %j', rawSignature);
     debug('sessionKey = %j', sessionKey);
     var signature = this.hash(rawSignature, sessionKey);
@@ -79,7 +83,6 @@ Auth.prototype.generateAuthorization = function (method, resource, params,
     if (signedHeaders.length) {
         return util.format('%s/%s/%s', rawSessionKey, signedHeaders.join(';'), signature);
     }
-
     return util.format('%s//%s', rawSessionKey, signature);
 };
 
@@ -138,9 +141,14 @@ Auth.prototype.headersCanonicalization = function (headers, headersToSign) {
         }
         key = key.toLowerCase();
         if (/^x\-bce\-/.test(key) || headersMap[key] === true) {
-            canonicalHeaders.push(util.format('%s:%s',
-                // encodeURIComponent(key), encodeURIComponent(value)));
-                strings.normalize(key), strings.normalize(value)));
+            canonicalHeaders.push(
+                util.format(
+                    '%s:%s',
+                    // encodeURIComponent(key), encodeURIComponent(value)));
+                    strings.normalize(key),
+                    strings.normalize(value)
+                )
+            );
         }
     });
 
@@ -161,5 +169,52 @@ Auth.prototype.hash = function (data, key) {
     return sha256Hmac.digest('hex');
 };
 
-module.exports = Auth;
+/* IAM 逻辑 */
 
+Auth.prototype.getTimestamp = function getTimestamp(timestamp) {
+    var now = timestamp ? new Date(timestamp * 1000) : new Date();
+    return now.toISOString().replace(/\.\d+Z$/, 'Z');
+};
+
+Auth.prototype.normalize = function (string, encodingSlash) {
+    var kEscapedMap = {
+        '!': '%21',
+        "'": '%27',
+        '(': '%28',
+        ')': '%29',
+        '*': '%2A'
+    };
+
+    if (string === null) {
+        return '';
+    }
+    var result = encodeURIComponent(string);
+    result = result.replace(/[!'\(\)\*]/g, function ($1) {
+        return kEscapedMap[$1];
+    });
+
+    if (encodingSlash === false) {
+        result = result.replace(/%2F/gi, '/');
+    }
+
+    return result;
+};
+
+Auth.prototype.generateCanonicalUri = function (url) {
+    if (!url.includes('bos-share.baidubce.com')) {
+        return url;
+    }
+
+    var pathname = require('url').parse(url).pathname.trim();
+    var resources = pathname.replace(/^\//, '').split('/');
+    if (!resources) {
+        return '';
+    }
+    var normalizedResourceStr = '';
+    for (var i = 0; i < resources.length; i++) {
+        normalizedResourceStr += '/' + this.normalize(resources[i]);
+    }
+    return normalizedResourceStr;
+};
+
+module.exports = Auth;
