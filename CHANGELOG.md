@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.0.0-rc.41(2023-10-26)
+
+- BosClient: support 'x-bce-process' in headers;
+- BosClient: add createFolderShareUrl method for sharing links;
+
 ## 1.0.0-rc.40(2023-06-19)
 
 - BosClient: 'x-bce-security-token' considered in auth token.
