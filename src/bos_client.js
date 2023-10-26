@@ -117,7 +117,6 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
 
     params.authorization = authorization;
 
-    
     return util.format('%s%s?%s', config.endpoint, resource, qs.encode(params));
 };
 
@@ -1757,7 +1756,8 @@ BosClient.prototype._prepareObjectHeaders = function (options) {
         H.X_BCE_FETCH_MODE,
         H.X_BCE_CALLBACK_ADDRESS,
         H.X_BCE_FETCH_REFERER,
-        H.X_BCE_FETCH_USER_AGENT
+        H.X_BCE_FETCH_USER_AGENT,
+        H.X_BCE_PROCESS
     ];
     var metaSize = 0;
     var headers = u.pick(options, function (value, key) {
