@@ -1,8 +1,14 @@
 
 const BosClient = require('../').BosClient;
 const config = require('./config');
-
-console.log(config.bos);
 const client = new BosClient(config.bos);
 
-(async function () {})()
+(async function () {
+    /** callback demo */
+    const res = await client.putObjectFromString('amis-mock', 'str1', 'lurunze', {
+        callback: {
+            urls: ["https://www.test.com/callback"],
+            vars: {name: 'baidu'}
+        }
+    });
+})()

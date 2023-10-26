@@ -22,6 +22,7 @@ exports.strings = require('./src/strings');
 exports.STS = require('./src/sts');
 exports.Auth = require('./src/auth');
 exports.MimeType = require('./src/mime.types');
+exports.Base64 = require('./src/base64');
 
 exports.HttpClient = require('./src/http_client');
 exports.BceBaseClient  = require('./src/bce_base_client');

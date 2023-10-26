@@ -34,6 +34,7 @@ var BceBaseClient = require('./bce_base_client');
 var MimeType = require('./mime.types');
 var WMStream = require('./wm_stream');
 var Multipart = require('./multipart');
+var Base64 = require('./base64');
 
 // var MIN_PART_SIZE = 1048576;                // 1M
 // var THREAD = 2;
@@ -1721,6 +1722,33 @@ BosClient.prototype._checkOptions = function (options, allowedParams) {
     rv.config = options.config || {};
     rv.headers = this._prepareObjectHeaders(options);
     rv.params = u.pick(options, allowedParams || []);
+
+    /** 如果使用callback参数格式传入，将参数处理为字符串格式 */
+    if (!u.has(options, H.X_BCE_PROCESS) && u.has(options, 'callback')) {
+        const callbackParams = u.extend(
+            {
+                /** urls, 缩写为u */
+                u: Base64.urlEncode(options.callback.urls),
+                /** mode, 缩写为u */
+                m: 'sync',
+                v: Base64.urlEncode(options.callback.vars),
+            },
+            /** encrypt, 缩写为e */
+            options.callback.encrypt && options.callback.encrypt === 'config' ? {e: 'config'} : {},
+            /** key, 缩写为k */
+            options.callback.key ? {k: options.callback.key} : {}
+        );
+        let callbackStr = '';
+        const callbackKeys = Object.keys(callbackParams);
+
+        callbackKeys.forEach((key, index) => {
+            callbackStr += key + '_' + callbackParams[key] + (index === callbackKeys.length - 1 ? '' : ',')
+        })
+
+        if (callbackStr) {
+            rv.headers[H.X_BCE_PROCESS] = 'callback/callback,' + callbackStr;
+        }
+    }
 
     return rv;
 };

@@ -1,5 +1,56 @@
 # CHANGELOG
 
+## 1.0.0-rc.42
+
+_published on 2023-10-26_
+
+- BosClient: support callback parameter in options;
+
+Approach 1:
+
+> Use the callback parameter, the SDK will help you process the parameter and add it to the request header.
+
+```javascript
+try {
+  const res = await client.putObjectFromString('bucketName', 'fileName', 'demo-string', {
+      callback: {
+        urls: ["https://www.test.com/callback"],
+        vars: {name: 'baidu'},
+        encrypt: 'config',
+        key: 'callback1'
+      }
+  });
+
+  /* callback result */
+  console.log(res.body.callback.result);
+} catch (e) {
+  /* callback error code */
+  console.error(res.body.callback.code);
+  /* callback error message */
+  console.error(res.body.callback.message);
+}
+```
+
+Approach 2:
+
+> Directly pass the "x-bce-process" parameter to headers.
+
+```javascript
+try {
+  const res = await client.putObjectFromString('bucketName', 'fileName', 'demo-string', {
+      'x-bce-process': 'callback/callback,u_WyJodHRwczovL3d3dy50ZXN0LmNvbS9jYWxsYmFjayJd,m_sync,v_eyJuYW1lIjoiYmFpZHUifQ'
+  });
+
+  /* callback result */
+  console.log(res.body.callback.result);
+} catch (e) {
+  /* callback error code */
+  console.error(res.body.callback.code);
+  /* callback error message */
+  console.error(res.body.callback.message);
+}
+```
+
 ## 1.0.0-rc.41
 
 _published on 2023-10-26_
