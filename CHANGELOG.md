@@ -1,55 +1,70 @@
 # CHANGELOG
 
-## 1.0.0-rc.41(2023-10-26)
+## 1.0.0-rc.41
+
+_published on 2023-10-26_
 
 - BosClient: support 'x-bce-process' in headers;
 - BosClient: add createFolderShareUrl method for sharing links;
 
-## 1.0.0-rc.40(2023-06-19)
+## 1.0.0-rc.40
+
+_published on 2023-06-19_
 
 - BosClient: 'x-bce-security-token' considered in auth token.
 
-## 1.0.0-rc.39(2023-06-16)
+## 1.0.0-rc.39
+
+_published on 2023-06-16_
 
 - BosClient: Add 'x-bce-security-token' when using generatePresignedUrl with sessionToken;
 
-## 1.0.0-rc.38(2023-02-16)
+## 1.0.0-rc.38
+
+_published on 2023-02-16_
 
 - BosClient: support symlink;
 
-## 1.0.0-rc.37(2023-01-09)
+## 1.0.0-rc.37
+
+_published on 2023-01-09_
 
 - BosClient: support 'x-bce-server-side-encryption', 'x-bce-restore-days', 'x-bce-restore-tier' headers;
 
-## 1.0.0-rc.36(2022-05-06)
+## 1.0.0-rc.36
+
+_published on 2022-05-06_
 
 - BOSClient: fix getObject stream.store
 
-## 1.0.0-rc.35(2022-05-05)
+## 1.0.0-rc.35
+
+_published on 2022-05-05_
 
 - BOSClient: Just keep an array of all of buffers and concat at the end.
 
-## 1.0.0-rc.34(2021-12-15)
+## 1.0.0-rc.34
+
+_published on 2021-12-15_
 
 - BOSClient: Provide cname_enabled field when using a custom domain name to delete bucketName path.
 
-## 1.0.0-rc.33(2021-11-26)
+## 1.0.0-rc.33
+
+_published on 2021-11-26_
 
 - TsdbDataClient: support database parameter.
+- BOSClient: fix the browser environment reference entry.
 
-### Fix
+## 1.0.0-rc.32
+
+_published on 2021-10-22_
 
 - BOSClient: fix the browser environment reference entry.
 
-## 1.0.0-rc.32(2021-10-22)
+## 1.0.0-rc.31
 
-### Fix
-
-- BOSClient: fix the browser environment reference entry.
-
-## 1.0.0-rc.31(2021-08-13)
-
-### Fix
+_published on 2021-08-13_
 
 - BOSClient: add key valiation in getObject() & getObjectToFile() method;
   - empty key is not allowed
@@ -57,39 +72,39 @@
   - forward slash (/) and a backslash (\\) are not allowed at head or tail
   - consecutive periods (..) are not allowed in sub-path
 
-## 1.0.0-rc.30(2021-08-03)
+## 1.0.0-rc.30
 
-### Fix
+_published on 2021-08-03_
 
 - BOSClient: fix issue of lack of '/' prefix of object url;
 
-## 1.0.0-rc.29(2021-08-03)
+## 1.0.0-rc.29
 
-### Feature
+_published on 2021-08-03_
 
 - BOSClient: support "config.removeVersionPrefix"(boolean) parameter to dynamic control 'v1' prefix of resource in generatePresignedUrl, generateUrl;
 
-## 1.0.0-rc.28(2021-03-26)
+## 1.0.0-rc.28
 
-### Fix
+_published on 2021-03-26_
 
 - Fix entry file path for browser environment
 
-## 1.0.0-rc.27(2021-03-03)
+## 1.0.0-rc.27
 
-### Features
+_published on 2021-03-03_
 
 - CFCClient supports trigger API
 
-## 1.0.0-rc.26(2020-12-23)
+## 1.0.0-rc.26
 
-### Features
+_published on 2020-12-23_
 
 - BOSClient supports putBucketStorageclass API
 - BOSClient supports putBucketAcl API
 
-## 1.0.0-rc.25(2020-09-01)
+## 1.0.0-rc.25
 
-### Features
+_published on 2020-09-01_
 
 - BOSClient supports `x-bce-storage-class` header
