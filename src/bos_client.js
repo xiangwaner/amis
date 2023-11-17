@@ -1703,7 +1703,8 @@ BosClient.prototype.sendHTTPRequest = function (httpMethod, resource, args, conf
     }
 
 
-    return doRequest.call(client).catch(function (err) {
+    const instance = doRequest.call(client);
+    const result = instance.catch(function (err) {
         var serverTimestamp = new Date(err[H.X_BCE_DATE]).getTime();
 
         BceBaseClient.prototype.timeOffset = serverTimestamp - Date.now();
@@ -1714,6 +1715,11 @@ BosClient.prototype.sendHTTPRequest = function (httpMethod, resource, args, conf
 
         return Q.reject(err);
     });
+
+    if (config.requestInstance) {
+      return [result, instance];
+    }
+    return result
 };
 
 BosClient.prototype._checkOptions = function (options, allowedParams) {
