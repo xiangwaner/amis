@@ -51,6 +51,12 @@ try {
 }
 ```
 
+## 1.0.1-beta.0
+
+_published on 2023-11-29_
+
+- BosClient: support `requestInstance` to manipulate request cancellation.
+
 ## 1.0.0-rc.41
 
 _published on 2023-10-26_

@@ -51909,7 +51909,7 @@ arguments[4][21][0].apply(exports,arguments)
 },{"./support/isBuffer":245,"_process":202,"dup":21,"inherits":244}],247:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.0-rc.42",
+  "version": "1.0.1-beta.0",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -51921,6 +51921,7 @@ module.exports={
   },
   "scripts": {
     "test": "./test/run-all.sh",
+    "version": "node scripts/version.js",
     "pack": "rm -rf dist/ && mkdir dist && browserify index.js -s baidubce.sdk -o dist/baidubce-sdk.bundle.js && uglifyjs dist/baidubce-sdk.bundle.js --compress --mangle -o dist/baidubce-sdk.bundle.min.js",
     "docs": "cd example && npm run start",
     "publish:bos": "node ./publish/publish_to_bos.js"
@@ -51952,7 +51953,6 @@ module.exports={
     "mocha": "^5.2.0"
   }
 }
-
 },{}],248:[function(require,module,exports){
 /**
  * Copyright (c) 2014 Baidu.com, Inc. All Rights Reserved
@@ -54652,7 +54652,8 @@ BosClient.prototype.sendHTTPRequest = function (httpMethod, resource, args, conf
     }
 
 
-    return doRequest.call(client).catch(function (err) {
+    const instance = doRequest.call(client);
+    const result = instance.catch(function (err) {
         var serverTimestamp = new Date(err[H.X_BCE_DATE]).getTime();
 
         BceBaseClient.prototype.timeOffset = serverTimestamp - Date.now();
@@ -54663,6 +54664,11 @@ BosClient.prototype.sendHTTPRequest = function (httpMethod, resource, args, conf
 
         return Q.reject(err);
     });
+
+    if (config.requestInstance) {
+      return [result, instance];
+    }
+    return result
 };
 
 BosClient.prototype._checkOptions = function (options, allowedParams) {
