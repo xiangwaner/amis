@@ -1693,9 +1693,15 @@ BosClient.prototype.sendHTTPRequest = function (httpMethod, resource, args, conf
         );
 
         promise.abort = function () {
-            if (agent._req && agent._req.xhr) {
-                var xhr = agent._req.xhr;
-                xhr.abort();
+            if (agent._req) {
+                // node环境下可能拿不到xhr实例，直接调用_req的abort方法
+                if (config.requestInstance) {
+                    agent._req.abort();
+                }
+                if (agent._req.xhr) {
+                    var xhr = agent._req.xhr;
+                    xhr.abort();
+                }
             }
         };
 
