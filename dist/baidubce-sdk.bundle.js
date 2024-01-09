@@ -51909,7 +51909,7 @@ arguments[4][21][0].apply(exports,arguments)
 },{"./support/isBuffer":245,"_process":202,"dup":21,"inherits":244}],247:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.1-beta.0",
+  "version": "1.0.1-beta.1",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -54642,9 +54642,15 @@ BosClient.prototype.sendHTTPRequest = function (httpMethod, resource, args, conf
         );
 
         promise.abort = function () {
-            if (agent._req && agent._req.xhr) {
-                var xhr = agent._req.xhr;
-                xhr.abort();
+            if (agent._req) {
+                // node环境下可能拿不到xhr实例，直接调用_req的abort方法
+                if (config.requestInstance) {
+                    agent._req.abort();
+                }
+                if (agent._req.xhr) {
+                    var xhr = agent._req.xhr;
+                    xhr.abort();
+                }
             }
         };
 

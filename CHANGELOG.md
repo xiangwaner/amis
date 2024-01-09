@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.0.1-beta.1
+
+_published on 2024-01-08_
+
+- BosClient: requestInstance use `_req.abort()` in Node.js env.
+
 ## 1.0.0-rc.42
 
 _published on 2023-10-26_
