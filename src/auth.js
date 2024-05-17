@@ -62,7 +62,7 @@ Auth.prototype.generateAuthorization = function (
     var now = this.getTimestamp(timestamp);
     var rawSessionKey = util.format('bce-auth-v1/%s/%s/%d', this.ak, now, expirationInSeconds || 1800);
     debug('rawSessionKey = %j', rawSessionKey);
-    var sessionKey = this.hash(rawSessionKey, this.sk);
+    var signingKey = this.hash(rawSessionKey, this.sk);
 
     var canonicalUri = this.generateCanonicalUri(resource);
     var canonicalQueryString = this.queryStringCanonicalization(params || {});
@@ -77,8 +77,8 @@ Auth.prototype.generateAuthorization = function (
 
     var rawSignature = util.format('%s\n%s\n%s\n%s', method, canonicalUri, canonicalQueryString, canonicalHeaders);
     debug('rawSignature = %j', rawSignature);
-    debug('sessionKey = %j', sessionKey);
-    var signature = this.hash(rawSignature, sessionKey);
+    debug('signingKey = %j', signingKey);
+    var signature = this.hash(rawSignature, signingKey);
 
     if (signedHeaders.length) {
         return util.format('%s/%s/%s', rawSessionKey, signedHeaders.join(';'), signature);
@@ -170,7 +170,11 @@ Auth.prototype.hash = function (data, key) {
 };
 
 /* IAM 逻辑 */
-
+/**
+ * convert the string of timestamp format to ISO8601 format
+ * @param {number} timestamp a number representing timestamp in seconds
+ * @returns 
+ */
 Auth.prototype.getTimestamp = function getTimestamp(timestamp) {
     var now = timestamp ? new Date(timestamp * 1000) : new Date();
     return now.toISOString().replace(/\.\d+Z$/, 'Z');
