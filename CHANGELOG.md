@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.0.1-beta.7
+
+_published on 2024-06-26_
+
+- BceClient: fix `net.isIP` not worked in browser envrioment.
+
 ## 1.0.1-beta.6
 
 _published on 2024-05-14_
