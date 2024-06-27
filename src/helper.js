@@ -22,6 +22,8 @@ var Q = require('q');
 var debug = require('debug')('bce-sdk:helper');
 var strings = require('./strings');
 var url = require('url');
+var util = require('util');
+var config = require('./config');
 
 // 超过这个限制就开始分片上传
 var MIN_MULTIPART_SIZE = 5 * 1024 * 1024; // 5M
@@ -224,7 +226,7 @@ function getTasks(data, uploadId, bucket, object, size, partSize) {
 const getDomainWithoutProtocal = function (host) {
   const url = new URL(host);
   return {
-    protocal: url.protocal,
+    protocol: url.protocol,
     host: url.host
   };
 };
@@ -281,7 +283,7 @@ const isBosHost = function (host) {
   if (arr.length !== 3) {
     return false;
   }
-  if (/\.bcebos\.com$/.test(domain)) {
+  if (!/\.bcebos\.com$/.test(domain)) {
     return false;
   }
   return true;
@@ -325,11 +327,59 @@ const needCompatibleBucketAndEndpoint = function (bucket, endpoint) {
  * @returns
  */
 const replaceEndpointByBucket = function (bucket, endpoint) {
-  const {protocal, host} = getDomainWithoutProtocal(endpoint);
+  const {protocol, host} = getDomainWithoutProtocal(endpoint);
   const arr = host.split('.');
-  arr[0] = protocal + bucket;
+  arr[0] = protocol + bucket;
   return arr.join('.');
 };
+
+/**
+ * compute base endpoint
+ */
+const generateBaseEndpoint = function (protocol, region) {
+  return util.format('%s://%s.%s',
+    protocol,
+    region,
+    config.DEFAULT_BOS_DOMAIN);
+}
+
+/**
+ * handle endpoint
+ */
+const handleEndpoint = function ({
+  bucketName,
+  endpoint, 
+  protocol,
+  region,
+  cname_enabled=false,
+  pathStyleEnable=false
+}) {
+  var resolvedEndpoint = endpoint;
+  // 使用的是自定义域名 / virtual-host
+  if (isCnameLikeHost(resolvedEndpoint) || cname_enabled) {
+    // if virtual host endpoint and bucket is not empty, compatible bucket and endpoint
+    if (needCompatibleBucketAndEndpoint(bucketName, resolvedEndpoint)) {
+        // bucket from api and from endpoint is different
+        resolvedEndpoint = replaceEndpointByBucket(bucketName, resolvedEndpoint);
+    }
+  }
+  else {
+    // if this region is provided, generate base endpoint
+    if (region) {
+      resolvedEndpoint = generateBaseEndpoint(protocol, region);
+    }
+    // 非ip/bns，pathStyleEnable不为true，强制转为pathStyle
+    // 否则保持原状
+    if (!pathStyleEnable && !isIpHost(resolvedEndpoint)) {
+        // service级别的接口不需要转换
+        if (bucketName && isBosHost(resolvedEndpoint)) {
+          const {protocol, host} = getDomainWithoutProtocal(resolvedEndpoint);
+          resolvedEndpoint = protocol + '//' + bucketName + '.' + host;
+        }
+    }
+  }
+  return resolvedEndpoint
+}
 
 exports.domainUtils = {
   getDomainWithoutProtocal,
@@ -338,5 +388,7 @@ exports.domainUtils = {
   isBosHost,
   isCnameLikeHost,
   needCompatibleBucketAndEndpoint,
-  replaceEndpointByBucket
+  replaceEndpointByBucket,
+  generateBaseEndpoint,
+  handleEndpoint
 };
