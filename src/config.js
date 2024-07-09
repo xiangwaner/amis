@@ -25,6 +25,8 @@ exports.DEFAULT_CONFIG = {
     pathStyleEnable: false,
 };
 
+exports.DEFAULT_BOS_DOMAIN = 'bcebos.com';
+
 
 
 
