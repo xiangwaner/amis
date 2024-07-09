@@ -1,11 +1,12 @@
 # CHANGELOG
 
-## 1.0.1-beta.8
+## 1.0.1-beta.9
+
 _published on 2024-07-09_
 
 - BceClient: support `region` and `customGenerateUrl` to change endpoint.
 
-## 1.0.1-beta.7
+## 1.0.1-beta.7 & 1.0.1-beta.8
 
 _published on 2024-06-26_
 
