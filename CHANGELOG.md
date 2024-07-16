@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## 1.0.1
+
+_published on 2024-07-16_
+
+### BosClient
+
+- `putSuperObject` API (encapsulation for mutipart upload)
+- `getBucketStorageclass` API
+- Support the `createSignature` method in `BceConfig` for customizing the generation of authentication signatures (Authorization)."
+- support virtual host mode.
+
+### BceClient
+
+- support `region` and `customGenerateUrl` to change endpoint.
+
 ## 1.0.1-beta.9
 
 _published on 2024-07-09_
