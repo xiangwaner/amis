@@ -57354,7 +57354,7 @@ exports.createContext = Script.createContext = function (context) {
 },{"indexof":153}],411:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.1",
+  "version": "1.0.2-beta.1",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -60808,13 +60808,14 @@ BosClient.prototype.sendHTTPRequest = function (httpMethod, resource, args, conf
     u.isFunction(config.createSignature) ? u.bind(config.createSignature, this) : u.bind(this.createSignature, this), args.outputStream);
     promise.abort = function () {
       if (agent._req) {
-        // node环境下可能拿不到xhr实例，直接调用_req的abort方法
-        if (config.requestInstance) {
-          agent._req.abort();
-        }
+        // 浏览器请求
         if (agent._req.xhr) {
           var xhr = agent._req.xhr;
           xhr.abort();
+        }
+        // node环境下可能拿不到xhr实例，直接调用_req的abort方法
+        else if (config.requestInstance) {
+          agent._req.abort();
         }
       }
     };
@@ -60867,7 +60868,7 @@ BosClient.prototype._checkOptions = function (options, allowedParams) {
   return rv;
 };
 BosClient.prototype._prepareObjectHeaders = function (options) {
-  var allowedHeaders = [H.ORIGIN, H.ACCESS_CONTROL_REQUEST_METHOD, H.ACCESS_CONTROL_REQUEST_HEADERS, H.CONTENT_LENGTH, H.CONTENT_ENCODING, H.CONTENT_MD5, H.X_BCE_CONTENT_SHA256, H.CONTENT_TYPE, H.CONTENT_DISPOSITION, H.ETAG, H.SESSION_TOKEN, H.CACHE_CONTROL, H.EXPIRES, H.X_BCE_ACL, H.X_BCE_GRANT_READ, H.X_BCE_GRANT_FULL_CONTROL, H.X_BCE_OBJECT_ACL, H.X_BCE_OBJECT_GRANT_READ, H.X_BCE_STORAGE_CLASS, H.X_BCE_SERVER_SIDE_ENCRYPTION, H.X_BCE_RESTORE_DAYS, H.X_BCE_RESTORE_TIER, H.X_BCE_SYMLINK_TARGET, H.X_BCE_FORBID_OVERWRITE, H.X_BCE_TRAFFIC_LIMIT, H.X_BCE_FETCH_SOURCE, H.X_BCE_FETCH_MODE, H.X_BCE_CALLBACK_ADDRESS, H.X_BCE_FETCH_REFERER, H.X_BCE_FETCH_USER_AGENT, H.X_BCE_PROCESS];
+  var allowedHeaders = [H.ORIGIN, H.ACCESS_CONTROL_REQUEST_METHOD, H.ACCESS_CONTROL_REQUEST_HEADERS, H.CONTENT_LENGTH, H.CONTENT_ENCODING, H.CONTENT_MD5, H.X_BCE_CONTENT_SHA256, H.CONTENT_TYPE, H.CONTENT_DISPOSITION, H.ETAG, H.SESSION_TOKEN, H.CACHE_CONTROL, H.EXPIRES, H.X_BCE_ACL, H.X_BCE_GRANT_READ, H.X_BCE_GRANT_FULL_CONTROL, H.X_BCE_OBJECT_ACL, H.X_BCE_OBJECT_GRANT_READ, H.X_BCE_STORAGE_CLASS, H.X_BCE_SERVER_SIDE_ENCRYPTION, H.X_BCE_RESTORE_DAYS, H.X_BCE_RESTORE_TIER, H.X_BCE_SYMLINK_TARGET, H.X_BCE_FORBID_OVERWRITE, H.X_BCE_TRAFFIC_LIMIT, H.X_BCE_FETCH_SOURCE, H.X_BCE_FETCH_MODE, H.X_BCE_CALLBACK_ADDRESS, H.X_BCE_FETCH_REFERER, H.X_BCE_FETCH_USER_AGENT, H.X_BCE_PROCESS, H.X_BCE_SOURCE];
   var metaSize = 0;
   var headers = u.pick(options, function (value, key) {
     if (allowedHeaders.indexOf(key) !== -1) {
@@ -62789,6 +62790,7 @@ exports.X_BCE_CALLBACK_ADDRESS = 'x-bce-callback-address';
 exports.X_BCE_FETCH_REFERER = 'x-bce-fetch-referer';
 exports.X_BCE_FETCH_USER_AGENT = 'x-bce-fetch-user-agent';
 exports.X_BCE_PROCESS = 'x-bce-process';
+exports.X_BCE_SOURCE = 'x-bce-source';
 exports.X_HTTP_HEADERS = 'http_headers';
 exports.X_BODY = 'body';
 exports.X_STATUS_CODE = 'status_code';
@@ -63057,6 +63059,9 @@ var isIpHost = function isIpHost(host) {
 var isBosHost = function isBosHost(host) {
   var domain = _getHostname(host);
   var arr = domain.split('.');
+  if (domain === 'bj-bos-sandbox.baidu-int.com') {
+    return true;
+  }
   if (arr.length !== 3) {
     return false;
   }
