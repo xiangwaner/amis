@@ -53,7 +53,7 @@ exports.X_BCE_FETCH_MODE = 'x-bce-fetch-mode';
 exports.X_BCE_CALLBACK_ADDRESS = 'x-bce-callback-address';
 exports.X_BCE_FETCH_REFERER = 'x-bce-fetch-referer';
 exports.X_BCE_FETCH_USER_AGENT = 'x-bce-fetch-user-agent';
-exports.X_BCE_PROCESS = 'x-bce-process';
+exports.X_BCE_SOURCE = 'x-bce-source';
 
 
 exports.X_HTTP_HEADERS = 'http_headers';

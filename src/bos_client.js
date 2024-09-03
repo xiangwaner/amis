@@ -1809,13 +1809,14 @@ BosClient.prototype.sendHTTPRequest = function (httpMethod, resource, args, conf
 
     promise.abort = function () {
       if (agent._req) {
-        // node环境下可能拿不到xhr实例，直接调用_req的abort方法
-        if (config.requestInstance) {
-          agent._req.abort();
-        }
+        // 浏览器请求
         if (agent._req.xhr) {
           var xhr = agent._req.xhr;
           xhr.abort();
+        }
+        // node环境下可能拿不到xhr实例，直接调用_req的abort方法
+        else if (config.requestInstance) {
+          agent._req.abort();
         }
       }
     };
@@ -1911,7 +1912,8 @@ BosClient.prototype._prepareObjectHeaders = function (options) {
     H.X_BCE_CALLBACK_ADDRESS,
     H.X_BCE_FETCH_REFERER,
     H.X_BCE_FETCH_USER_AGENT,
-    H.X_BCE_PROCESS
+    H.X_BCE_PROCESS,
+    H.X_BCE_SOURCE
   ];
   var metaSize = 0;
   var headers = u.pick(options, function (value, key) {

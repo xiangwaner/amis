@@ -280,6 +280,9 @@ const isIpHost = function (host) {
 const isBosHost = function (host) {
   const domain = _getHostname(host);
   const arr = domain.split('.');
+  if (domain === 'bj-bos-sandbox.baidu-int.com') {
+    return true;
+  }
   if (arr.length !== 3) {
     return false;
   }
