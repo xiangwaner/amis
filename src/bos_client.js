@@ -131,7 +131,8 @@ BosClient.prototype.generatePresignedUrl = function (
     endpoint, 
     protocol: config.protocol,
     cname_enabled: config.cname_enabled,
-    pathStyleEnable: config.pathStyleEnable
+    pathStyleEnable: config.pathStyleEnable,
+    customGenerateUrl: config.customGenerateUrl
   });
 
   params = params || {};
@@ -1725,10 +1726,25 @@ BosClient.prototype.sendRequest = function (httpMethod, varArgs, requestUrl) {
 
   varArgs.bucketName = this.config.cname_enabled ? '' : bucketName;
 
+  const customGenerateUrl = varArgs.config && varArgs.config.customGenerateUrl
+    ? varArgs.config.customGenerateUrl
+    : this.config.customGenerateUrl
+      ? this.config.customGenerateUrl
+      : undefined;
+
   // provide the method for generating url
-  if (varArgs.config && varArgs.config.customGenerateUrl && typeof varArgs.config.customGenerateUrl === 'function') {
-    endpoint = varArgs.config.customGenerateUrl(bucketName, region)
-    resource =  requestUrl || path.normalize(strings.normalize(varArgs.key || '', false)).replace(/\\/g, '/');
+  if (typeof customGenerateUrl === 'function') {
+    endpoint = customGenerateUrl(bucketName, region);
+    var resource =
+      requestUrl ||
+      path
+        .normalize(
+          path.join(
+            varArgs.removeVersionPrefix ? '/' : '/v1',
+            strings.normalize(varArgs.key || '', false)
+          )
+        )
+        .replace(/\\/g, '/');
   }
   else {
     endpoint = domainUtils.handleEndpoint({
@@ -1737,7 +1753,7 @@ BosClient.prototype.sendRequest = function (httpMethod, varArgs, requestUrl) {
       region,
       protocol: this.config.protocol,
       cname_enabled: this.config.cname_enabled,
-      pathStyleEnable: this.config.pathStyleEnable
+      pathStyleEnable: this.config.pathStyleEnable,
     })
 
     var resource =

@@ -354,10 +354,15 @@ const handleEndpoint = function ({
   endpoint, 
   protocol,
   region,
+  customGenerateUrl,
   cname_enabled=false,
-  pathStyleEnable=false
+  pathStyleEnable=false,
 }) {
   var resolvedEndpoint = endpoint;
+  // 有自定义域名函数
+  if (customGenerateUrl) {
+    return customGenerateUrl(bucketName, region);
+  }
   // 使用的是自定义域名 / virtual-host
   if (isCnameLikeHost(resolvedEndpoint) || cname_enabled) {
     // if virtual host endpoint and bucket is not empty, compatible bucket and endpoint
@@ -381,7 +386,7 @@ const handleEndpoint = function ({
         }
     }
   }
-  return resolvedEndpoint
+  return resolvedEndpoint;
 }
 
 exports.domainUtils = {
