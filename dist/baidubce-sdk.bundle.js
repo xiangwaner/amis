@@ -57354,7 +57354,7 @@ exports.createContext = Script.createContext = function (context) {
 },{"indexof":153}],411:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.2-beta.1",
+  "version": "1.0.2-beta.2",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -59328,7 +59328,8 @@ BosClient.prototype.generatePresignedUrl = function (bucketName, key, timestamp,
     endpoint: endpoint,
     protocol: config.protocol,
     cname_enabled: config.cname_enabled,
-    pathStyleEnable: config.pathStyleEnable
+    pathStyleEnable: config.pathStyleEnable,
+    customGenerateUrl: config.customGenerateUrl
   });
   params = params || {};
   var resource = path.normalize(path.join(config.removeVersionPrefix ? '/' : '/v1', !config.pathStyleEnable ? '' : strings.normalize(bucketName || ''), strings.normalize(key || '', false))).replace(/\\/g, '/');
@@ -60744,11 +60745,12 @@ BosClient.prototype.sendRequest = function (httpMethod, varArgs, requestUrl) {
   var bucketName = varArgs.bucketName;
   var region = (_varArgs$config = varArgs.config) === null || _varArgs$config === void 0 ? void 0 : _varArgs$config.region;
   varArgs.bucketName = this.config.cname_enabled ? '' : bucketName;
+  var customGenerateUrl = varArgs.config && varArgs.config.customGenerateUrl ? varArgs.config.customGenerateUrl : this.config.customGenerateUrl ? this.config.customGenerateUrl : undefined;
 
   // provide the method for generating url
-  if (varArgs.config && varArgs.config.customGenerateUrl && typeof varArgs.config.customGenerateUrl === 'function') {
-    endpoint = varArgs.config.customGenerateUrl(bucketName, region);
-    resource = requestUrl || path.normalize(strings.normalize(varArgs.key || '', false)).replace(/\\/g, '/');
+  if (typeof customGenerateUrl === 'function') {
+    endpoint = customGenerateUrl(bucketName, region);
+    var resource = requestUrl || path.normalize(path.join(varArgs.removeVersionPrefix ? '/' : '/v1', strings.normalize(varArgs.key || '', false))).replace(/\\/g, '/');
   } else {
     endpoint = domainUtils.handleEndpoint({
       bucketName: bucketName,
@@ -63133,11 +63135,16 @@ var handleEndpoint = function handleEndpoint(_ref) {
     endpoint = _ref.endpoint,
     protocol = _ref.protocol,
     region = _ref.region,
+    customGenerateUrl = _ref.customGenerateUrl,
     _ref$cname_enabled = _ref.cname_enabled,
     cname_enabled = _ref$cname_enabled === void 0 ? false : _ref$cname_enabled,
     _ref$pathStyleEnable = _ref.pathStyleEnable,
     pathStyleEnable = _ref$pathStyleEnable === void 0 ? false : _ref$pathStyleEnable;
   var resolvedEndpoint = endpoint;
+  // 有自定义域名函数
+  if (customGenerateUrl) {
+    return customGenerateUrl(bucketName, region);
+  }
   // 使用的是自定义域名 / virtual-host
   if (isCnameLikeHost(resolvedEndpoint) || cname_enabled) {
     // if virtual host endpoint and bucket is not empty, compatible bucket and endpoint

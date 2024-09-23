@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 1.0.2-beta.2
+
+_published on 2024-09-23_
+
+### BosClient
+
+- support global config `customGenerateUrl` to set custom endpoint.
+
+
 ## 1.0.2-beta.0 & ## 1.0.2-beta.1
 
 _published on 2024-09-03_
