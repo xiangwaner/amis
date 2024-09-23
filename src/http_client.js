@@ -129,7 +129,6 @@ HttpClient.prototype.updateConfigByPath = function (path, value) {
  */
 HttpClient.prototype.sendRequest = function (httpMethod, path, body, headers, params, signFunction, outputStream) {
   httpMethod = httpMethod.toUpperCase();
-  
   var requestUrl = this._getRequestUrl(path, params);
   var options = require('url').parse(requestUrl);
   debug('httpMethod = %s, requestUrl = %s, options = %j', httpMethod, requestUrl, options);
