@@ -57354,7 +57354,7 @@ exports.createContext = Script.createContext = function (context) {
 },{"indexof":153}],411:[function(require,module,exports){
 module.exports={
   "name": "@baiducloud/sdk",
-  "version": "1.0.2-beta.2",
+  "version": "1.0.2",
   "description": "Baidu Cloud Engine JavaScript SDK",
   "main": "./index.js",
   "browser": {
@@ -57407,7 +57407,9 @@ module.exports={
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
+    "@babel/plugin-syntax-optional-chaining-assign": "^7.24.7",
     "@babel/plugin-transform-async-to-generator": "^7.23.3",
+    "@babel/plugin-transform-nullish-coalescing-operator": "^7.24.7",
     "@babel/preset-env": "^7.24.0",
     "@types/async": "^3.2.24",
     "@types/jest": "^29.5.12",
@@ -57427,6 +57429,7 @@ module.exports={
     "uglify-js": "^3.17.4"
   }
 }
+
 },{}],412:[function(require,module,exports){
 "use strict";
 
@@ -60731,7 +60734,6 @@ BosClient.prototype.selectObject = function (bucketName, objectName, body, optio
 
 // --- E N D ---
 BosClient.prototype.sendRequest = function (httpMethod, varArgs, requestUrl) {
-  var _varArgs$config;
   var defaultArgs = {
     bucketName: null,
     key: null,
@@ -60743,7 +60745,7 @@ BosClient.prototype.sendRequest = function (httpMethod, varArgs, requestUrl) {
   };
   var endpoint = this.config.endpoint;
   var bucketName = varArgs.bucketName;
-  var region = (_varArgs$config = varArgs.config) === null || _varArgs$config === void 0 ? void 0 : _varArgs$config.region;
+  var region = varArgs.config ? varArgs.config.region : this.config.region;
   varArgs.bucketName = this.config.cname_enabled ? '' : bucketName;
   var customGenerateUrl = varArgs.config && varArgs.config.customGenerateUrl ? varArgs.config.customGenerateUrl : this.config.customGenerateUrl ? this.config.customGenerateUrl : undefined;
 

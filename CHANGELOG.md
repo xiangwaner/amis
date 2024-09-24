@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 1.0.2
+
+_published on 2024-09-24_
+
+- support global config `customGenerateUrl` to set custom endpoint.
+- support `x-bce-source` header
+- fix optional-chaining-assign syntax not transformed issue.
+
 ## 1.0.2-beta.2
 
 _published on 2024-09-23_
@@ -7,7 +15,6 @@ _published on 2024-09-23_
 ### BosClient
 
 - support global config `customGenerateUrl` to set custom endpoint.
-
 
 ## 1.0.2-beta.0 & ## 1.0.2-beta.1
 

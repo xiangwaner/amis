@@ -25,7 +25,11 @@ function build() {
   Browserify(inputFile, {standalone: 'baidubce.sdk'})
     .transform('babelify', {
       presets: ['@babel/preset-env'],
-      plugins: ['@babel/plugin-proposal-optional-chaining-assign', '@babel/plugin-transform-nullish-coalescing-operator']
+      plugins: [
+        '@babel/plugin-transform-async-to-generator',
+        ['@babel/plugin-syntax-optional-chaining-assign', {version: '2023-07'}],
+        '@babel/plugin-transform-nullish-coalescing-operator'
+      ]
     })
     .bundle()
     .pipe(fs.createWriteStream(outputJS))
