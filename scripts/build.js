@@ -24,7 +24,8 @@ function build() {
 
   Browserify(inputFile, {standalone: 'baidubce.sdk'})
     .transform('babelify', {
-      presets: ['@babel/preset-env']
+      presets: ['@babel/preset-env'],
+      plugins: ['@babel/plugin-proposal-optional-chaining-assign', '@babel/plugin-transform-nullish-coalescing-operator']
     })
     .bundle()
     .pipe(fs.createWriteStream(outputJS))
